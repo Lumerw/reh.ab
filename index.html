@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>reh.ab — Make an impact together</title>
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon/icon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon/icon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./assets/favicon/icon-180.png">
+<meta name="theme-color" content="#CA002A">
+<meta name="description" content="reh.ab — a concept for mental-health support inside gaming communities: guardian servers with psychologists and psychiatrists who play. A portfolio project by Wojciech Lumer.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="reh.ab — Make an impact together">
+<meta property="og:description" content="A concept for mental-health support inside gaming communities: guardian servers with specialists who actually play.">
+<meta property="og:url" content="https://lumerw.github.io/reh.ab/">
+<meta property="og:image" content="https://lumerw.github.io/reh.ab/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="reh.ab — Make an impact together. White headline on deep red.">
+<meta name="twitter:card" content="summary_large_image">
+<!-- marks the document as scripted before first paint; every hidden-until-
+     animated state below is scoped to .js, so the page reads fine without it -->
+<script>document.documentElement.classList.add("js")</script>
+
+<!--
+  reh.ab — concept pitch-deck site (portfolio project by Wojciech Lumer)
+  One static page: index.html + css/style.css + js/main.js + assets/.
+  Third-party marks are shown nominatively, as cited sources or as the
+  platforms the concept would run on; none of the organisations endorse it.
+-->
+
+<link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to main content</a>
+
+<div class="a11y" id="a11y">
+  <button type="button" class="a11y__btn" id="a11yBtn"
+          aria-expanded="false" aria-controls="a11yPanel"
+          aria-label="Accessibility options">
+    <!-- ikona_dostepnosci.svg, inlined as supplied (286x286 viewBox) -->
+    <svg viewBox="0 0 286 286" aria-hidden="true" focusable="false">
+      <path d="M135.34 0.2053C214.206 -3.98855 281.525 56.5778 285.66 135.447C289.793 214.317 229.177 281.59 150.304 285.665C71.5155 289.735 4.32962 229.197 0.19952 150.412C-3.93056 71.626 56.5573 4.3947 135.34 0.2053Z" fill="black"/>
+      <path d="M137.132 27.2493C201.007 24.0488 255.387 73.2241 258.609 137.098C261.832 200.972 212.674 255.37 148.801 258.612C84.8981 261.855 30.4701 212.67 27.2474 148.767C24.0244 84.8626 73.2274 30.4511 137.132 27.2493Z" fill="white"/>
+      <path d="M199.92 93.6926C203.074 93.2781 207.043 94.6171 209.498 96.6146C212.327 98.9591 214.106 102.333 214.444 105.992C214.796 109.684 213.62 113.36 211.191 116.164C206.456 121.647 177.901 130.792 169.92 131.457L169.897 150.832C169.895 154.001 169.704 160.499 170.313 163.256C171.317 167.804 173.396 173.478 174.916 178.021L183.724 204.311C184.82 207.587 187.26 214.281 187.639 217.346C188.058 220.842 187.042 224.357 184.824 227.091C182.552 229.951 179.217 231.767 175.581 232.123C170.986 232.594 166.466 230.703 163.576 227.099C162.743 226.044 161.889 224.434 161.449 223.17C157.441 211.675 153.757 200.037 149.884 188.497C149.141 186.283 147.755 180.977 145.992 179.764C138.795 174.81 136.61 186.802 135.194 191.179L128.657 210.8C126.949 216.026 125.103 223.616 121.791 227.842L121.608 228.032C119.076 230.658 115.595 232.157 111.947 232.191C108.191 232.223 104.765 230.88 102.11 228.204C99.5983 225.667 98.2081 222.229 98.2496 218.659C98.3041 215.081 101.024 207.87 102.22 204.296L110.977 178.17C112.361 174.034 114.597 167.886 115.519 163.792C116.332 160.182 116.192 153.057 116.19 149.192L116.162 131.642C104.578 129.742 87.7413 124.023 77.3668 118.428C74.4988 116.882 72.3776 113.25 71.7311 109.99C70.9968 106.343 71.7741 102.554 73.8848 99.4906C81.8641 87.9783 95.1308 97.3373 104.881 100.689C111.487 102.978 118.285 104.671 125.193 105.747C144.064 108.655 163.359 106.879 181.381 100.574C186.809 98.6878 195.038 94.5748 199.92 93.6926Z" fill="black"/>
+      <path d="M140.592 44.7447C152.974 43.4504 164.048 52.4707 165.285 64.8584C166.521 77.2462 157.45 88.2779 145.056 89.4569C132.744 90.6284 121.801 81.6292 120.572 69.3227C119.343 57.0162 128.292 46.0307 140.592 44.7447Z" fill="black"/>
+    </svg>
+  </button>
+  <div class="a11y__panel" id="a11yPanel" role="group" aria-labelledby="a11yTitle">
+    <h2 id="a11yTitle">Accessibility</h2>
+
+    <div class="a11y__row">
+      <span id="a11yMotionLabel">Reduce motion</span>
+      <button type="button" class="a11y__switch" id="a11yMotion"
+              role="switch" aria-checked="false" aria-labelledby="a11yMotionLabel"></button>
+    </div>
+
+    <div class="a11y__row">
+      <span id="a11yContrastLabel">High contrast</span>
+      <button type="button" class="a11y__switch" id="a11yContrast"
+              role="switch" aria-checked="false" aria-labelledby="a11yContrastLabel"></button>
+    </div>
+
+    <div class="a11y__row">
+      <span id="a11yTextLabel">Text size</span>
+      <div class="a11y__steps" role="group" aria-labelledby="a11yTextLabel">
+        <button type="button" data-size="sm" aria-pressed="false">A-</button>
+        <button type="button" data-size="md" aria-pressed="true">A</button>
+        <button type="button" data-size="lg" aria-pressed="false">A+</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="progress"></div>
+
+<!-- ===== LOADER ===== -->
+<div id="loader" aria-hidden="true">
+  <div class="loader-inner">
+    <div class="orb orb--loader">
+      <span class="orb__glow"></span>
+      <span class="orb__ring"></span>
+      <svg class="orb__spark" viewBox="0 0 24 24"><path d="M12 1.6c.7 5.3 5.1 9.7 10.4 10.4-5.3.7-9.7 5.1-10.4 10.4-.7-5.3-5.1-9.7-10.4-10.4C6.9 11.3 11.3 6.9 12 1.6Z"/></svg>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== HERO · bg red ===== -->
+<main id="main">
+<header class="sec sec--red" id="hero">
+  <p class="concept-flag"><a href="#about">Concept project</a></p>
+  <div class="wrap wrap--wide">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <h1 class="hero-h1" id="heroH1">
+          <span class="w">Make</span> <span class="w">an</span>
+          <span class="w d1">impact</span>
+          <span class="w"><span class="d2">toget</span><span class="her">her</span>.</span>
+        </h1>
+
+        <p class="lede">
+          An estimated 40% of the world's population plays games online.<a class="fn" href="#src-1">1</a>
+          In the US alone, more than two in three people play video games.<a class="fn" href="#src-2">2</a>
+          Gaming is one of the biggest social spaces on earth — and one of the least supported.
+        </p>
+
+        <div class="ticker" data-ticker aria-label="data. vision. tools — put to use.">
+          <div class="ticker__track">
+            <span>data.</span>
+            <span>vision.</span>
+            <span>tools — put to use.</span>
+            <span aria-hidden="true">data.</span>
+            <span aria-hidden="true">vision.</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="band band--gradient proof">
+    <div class="band__row">
+
+      <div class="avatars" aria-hidden="true">
+        <video aria-hidden="true" tabindex="-1" data-media="p1" poster="./assets/placeholder/p1.svg" muted autoplay loop playsinline preload="metadata"></video>
+        <video aria-hidden="true" tabindex="-1" data-media="p2" poster="./assets/placeholder/p2.svg" muted autoplay loop playsinline preload="metadata"></video>
+        <video aria-hidden="true" tabindex="-1" data-media="p3" poster="./assets/placeholder/p3.svg" muted autoplay loop playsinline preload="metadata"></video>
+      </div>
+      <p id="proofQuote" aria-live="polite">“this is more helpful than you think”</p>
+      <div class="proof-line" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
+</header>
+
+
+<!-- ===== THE GAP · bg red ===== -->
+<section class="sec sec--red rv">
+  <div class="wrap">
+    <span class="tag">Why</span>
+    <h2>A lot of people need help with their mental health. Many of them never reach it.</h2>
+
+    <div class="stats">
+      <!-- All three numbers are sourced — see #sources. -->
+      <div class="stat"><b>40%</b><span>of the world's population were online gamers as of 2022<a class="fn" href="#src-1">1</a></span></div>
+      <div class="stat"><b>2 in 3</b><span>Americans play video games<a class="fn" href="#src-2">2</a></span></div>
+      <div class="stat"><b>3.2B</b><span>online gamers worldwide, projected to reach 5.7B by 2032<a class="fn" href="#src-1">1</a></span></div>
+    </div>
+
+    <p class="micro">
+      More than <strong>a billion people</strong> live with a mental-health condition. Even in
+      higher-income countries only about half of them get care; in low-income countries, fewer
+      than one in ten.<a class="fn" href="#src-3">3</a> Gaming itself is rarely the illness —
+      an estimated 0.3–1.0% of the general population may meet the criteria for gaming
+      disorder.<a class="fn" href="#src-2">2</a> The point is reach: many of the people who
+      need support already spend their evenings in games.
+    </p>
+  </div>
+
+  <div class="icon-mark" role="img"
+       aria-label="An S O S distress signal, blinking in Morse code.">
+    <div class="sos sos--alt" aria-hidden="true">SOS<sup>1</sup></div>
+  </div>
+</section>
+
+
+<!-- ===== THE SOLUTION · bg black ===== -->
+<section class="sec sec--black rv">
+  <div class="wrap">
+    <span class="tag">Why → What</span>
+    <h2>The solution is simple: real servers, hosted by real specialists.</h2>
+    <p class="lede">
+      Create communities inside the places people already play — hosted by psychologists,
+      psychiatrists and trained specialists.
+      People keep playing, keep being online, but now inside a space where a specialist is close by.
+      It's a small shift that changes everything.
+    </p>
+  </div>
+</section>
+
+
+<!-- ===== VISUALISATION · bg black ===== -->
+<section class="sec sec--black rv" id="inside" style="padding-top:0">
+  <div class="wrap wrap--wide">
+    <p class="cap">What it looks like from the inside</p>
+
+
+    <div class="viz" id="viz">
+      <div class="viz__rail" role="tablist" aria-label="Spaces" id="vizRail">
+        <button type="button" role="tab" class="on" data-space="R" aria-selected="true">R</button>
+        <hr>
+        <button type="button" role="tab" data-space="A" aria-selected="false">A</button>
+        <button type="button" role="tab" data-space="B" aria-selected="false">B</button>
+        <button type="button" role="tab" data-space="C" aria-selected="false">C</button>
+        <hr>
+        <span class="viz__add" aria-hidden="true">+</span>
+      </div>
+
+      <div class="viz__chan">
+        <h4 id="vizSpaceName">guardian · eu-west</h4>
+        <b id="vizTabsLabel">Text</b>
+        <div class="viz__tabs" role="tablist" aria-labelledby="vizTabsLabel" id="vizTabs"></div>
+        <b aria-hidden="true">Voice</b>
+        <span class="viz__vc" aria-hidden="true">#lobby-vc</span>
+        <span class="viz__vc" aria-hidden="true">#quiet-room</span>
+      </div>
+
+      <div class="viz__main">
+        <div class="viz__bar"><span id="vizBar"></span><em id="vizStatus"></em></div>
+        <div class="viz__panels" id="vizPanels"></div>
+        <div class="viz__typing" id="vizTyping" aria-hidden="true"><b><s></s><s></s><s></s></b><span id="vizTypingName"></span> is typing…</div>
+      </div>
+
+      <div class="viz__members" id="vizMembers"></div>
+      <p class="sr-only" id="vizAnnounce" aria-live="polite"></p>
+      <div class="prof" id="vizProfile" role="dialog" aria-modal="true" aria-labelledby="vizProfileName" hidden></div>
+    </div>
+
+
+    <div class="logorow">
+      <p class="cap">Platforms we live on</p>
+      <div class="marquee" data-marquee tabindex="0" role="group" aria-label="Gaming and social platforms the product is distributed on. Scrollable.">
+        <div class="marquee__track">
+          <span class="logo"><img src="./assets/logos/steam.png" alt="Steam" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/twitch.png" alt="Twitch" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/kick.png" alt="Kick" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/discord.png" alt="Discord" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/teamspeak.png" alt="TeamSpeak" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/stadia.png" alt="Stadia" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/xbox.png" alt="Xbox" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/instagram.png" alt="Instagram" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/facebook.png" alt="Facebook" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/linkedin.png" alt="LinkedIn" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/threads.png" alt="Threads" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/tiktok.png" alt="TikTok" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/steam.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/twitch.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/kick.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/discord.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/teamspeak.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/stadia.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/xbox.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/instagram.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/facebook.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/linkedin.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/threads.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/tiktok.png" alt="" loading="lazy"></span>
+        </div>
+      </div>
+    </div>
+    <p class="credit-fallback">
+      Platform marks are shown to indicate where the product is distributed. They do not
+      indicate any partnership or endorsement.
+
+    </p>
+  </div>
+</section>
+
+
+<!-- ===== THE PROBLEM · bg red ===== -->
+<section class="sec sec--red rv">
+  <div class="wrap wrap--wide">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="tag">Why</span>
+        <h2>Hours don't predict harm. Why people play does.</h2>
+        <p class="micro">
+          The World Health Organization added <strong>gaming disorder</strong> to ICD-11 in 2019,
+          and it has applied since 2022;<a class="fn" href="#src-4">4</a> the American Psychiatric
+          Association's DSM-5-TR still lists it only as a condition for further
+          research.<a class="fn" href="#src-5">5</a> Meanwhile a University of Oxford study that
+          logged real play from nearly 40,000 players found no meaningful link between hours
+          played and wellbeing. What mattered was why people played: those who felt they
+          <em>had to</em> play reported worse wellbeing; those who simply <em>wanted</em> to play
+          did not.<a class="fn" href="#src-6">6</a> Motivation research has described the same
+          split for years — play that meets needs for enjoyment, competence and connection, versus
+          play driven by pressure.<a class="fn" href="#src-7">7</a>
+          Choice versus compulsion — that difference is the whole idea behind this platform.
+        </p>
+      </div>
+    </div>
+
+
+    <div class="icon-mark" aria-hidden="true"><div class="orb">
+      <span class="orb__glow"></span>
+      <span class="orb__ring"></span>
+      <svg class="orb__spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1.6c.7 5.3 5.1 9.7 10.4 10.4-5.3.7-9.7 5.1-10.4 10.4-.7-5.3-5.1-9.7-10.4-10.4C6.9 11.3 11.3 6.9 12 1.6Z"/></svg>
+    </div></div>
+
+
+  </div>
+</section>
+
+
+<!-- ===== MISSION · bg black ===== -->
+<section class="sec sec--black rv">
+  <div class="wrap">
+    <span class="tag">Why → What</span>
+    <h2>We're building a support platform, not a clinic.</h2>
+    <p class="lede">
+      We believe in a better future for young people online — and that even digital spaces
+      can genuinely help, not just harm. reh.ab is prevention and early support: the step
+      before treatment, and the bridge to it.
+    </p>
+  </div>
+</section>
+
+
+<!-- ===== PRODUCT · bg black ===== -->
+<section class="sec sec--black rv" style="padding-top:0">
+  <div class="wrap wrap--wide">
+    <p class="cap">Find a specialist who actually plays</p>
+    <div class="dir" role="img" aria-label="Product mockup: a directory of specialist profile cards, each with a name, verified credential, specialties and the games they play.">
+      <div class="dir__bar" aria-hidden="true">
+        <em>Search specialists — anxiety, burnout, gaming…</em>
+        <u>Language</u><u>Game</u><u>Availability</u>
+      </div>
+      <div class="dir__grid" aria-hidden="true">
+        <article class="card">
+          <div class="card__top"><video aria-hidden="true" tabindex="-1" data-media="p4" poster="./assets/placeholder/p4.svg" muted autoplay loop playsinline preload="metadata"></video>
+            <div><h3>Dr. A. Nowak</h3><b class="card__cred">PSYCHIATRIST · LIC. VERIFIED</b></div>
+          </div>
+          <p>Works with compulsive play and sleep collapse. Plays extraction shooters, badly.</p>
+          <div class="chips"><s>Addiction</s><s>Sleep</s><s>PL / EN</s></div>
+          <div class="card__foot">On a guardian server now</div>
+        </article>
+        <article class="card">
+          <div class="card__top"><video aria-hidden="true" tabindex="-1" data-media="p1" poster="./assets/placeholder/p1.svg" muted autoplay loop playsinline preload="metadata"></video>
+            <div><h3>M. Kowalczyk</h3><b class="card__cred">PSYCHOLOGIST · LIC. VERIFIED</b></div>
+          </div>
+          <p>Teen isolation and school refusal. Ten years in survival-craft servers.</p>
+          <div class="chips"><s>Teens</s><s>Isolation</s><s>PL</s></div>
+          <div class="card__foot">On a guardian server now</div>
+        </article>
+        <article class="card">
+          <div class="card__top"><video aria-hidden="true" tabindex="-1" data-media="p3" poster="./assets/placeholder/p3.svg" muted autoplay loop playsinline preload="metadata"></video>
+            <div><h3>J. Lindqvist</h3><b class="card__cred">COUNSELLOR · LIC. VERIFIED</b></div>
+          </div>
+          <p>Group dynamics and moderation. Runs the quiet rooms on EU-North.</p>
+          <div class="chips"><s>Community</s><s>Moderation</s><s>EN / SE</s></div>
+          <div class="card__foot">On a guardian server now</div>
+        </article>
+      </div>
+    </div>
+    <p class="credit-fallback">
+      Mockup. Names, credentials and availability are fictional. The portraits are abstract
+      placeholders (stock footage of models in the author's local build) — never the people
+      named on the cards.
+
+    </p>
+
+
+    <div class="logorow">
+      <p class="cap">Referenced on this page</p>
+      <div class="darkband">
+        <div class="marquee" data-marquee tabindex="0" role="group" aria-label="Organisations referenced as sources in this deck. Scrollable.">
+          <div class="marquee__track">
+            <span class="logo"><img src="./assets/logos/who.png" alt="World Health Organization" loading="lazy"></span>
+            <span class="logo"><img src="./assets/logos/frontiers.png" alt="Frontiers" loading="lazy"></span>
+            <span class="logo"><img src="./assets/logos/oxford.png" alt="University of Oxford" loading="lazy"></span>
+            <span class="logo"><img src="./assets/logos/conversation.png" alt="The Conversation" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/who.png" alt="" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/frontiers.png" alt="" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/oxford.png" alt="" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/conversation.png" alt="" loading="lazy"></span>
+          </div>
+        </div>
+      </div>
+      <p class="credit-fallback">
+        Also referenced: Harvard Health Publishing, the American Psychological Association,
+        the American Psychiatric Association, Uswitch and the ADL. All are cited as sources —
+        not partners, and not endorsers. Full list with links at the bottom of this page.
+
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ===== WHY A SPECIALIST · bg black ===== -->
+<section class="sec sec--black rv">
+  <div class="wrap">
+    <span class="tag">Why a specialist</span>
+    <h2>Often the game isn't the problem. It's where the problem shows up.</h2>
+    <p class="lede">
+      Research on “compensatory” internet use suggests that heavy play is often a way of coping
+      with something else — stress, low mood, loneliness.<a class="fn" href="#src-8">8</a>
+      A moderator can stop a fight. A specialist can notice the person behind it, and help
+      them find the right kind of support.
+    </p>
+  </div>
+</section>
+
+
+<!-- ===== WHO WE NEED · bg red ===== -->
+<section class="sec sec--red rv">
+  <div class="wrap">
+    <span class="tag">What</span>
+    <h2>To build this space we need the best — psychologists, psychiatrists, specialists who understand games.</h2>
+  </div>
+
+  <div class="icon-mark" role="img"
+       aria-label="Two loops that slowly close into a heart.">
+    <div class="care" aria-hidden="true">
+    <svg viewBox="0 0 100 62" id="careMorph">
+      <path d="M50.0,30.0C39.3,30.0 26.0,48.0 18.0,48.0C10.0,48.0 2.0,36.0 2.0,30.0C2.0,24.0 10.0,12.0 18.0,12.0C26.0,12.0 39.3,30.0 50.0,30.0C60.7,30.0 74.0,12.0 82.0,12.0C90.0,12.0 98.0,24.0 98.0,30.0C98.0,36.0 90.0,48.0 82.0,48.0C74.0,48.0 60.7,30.0 50.0,30.0Z">
+        <animate attributeName="d" dur="8s" repeatCount="indefinite"
+          calcMode="spline"
+          keyTimes="0;0.22;0.44;0.66;0.85;1"
+          keySplines="0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1;0.4 0 0.2 1"
+          values="M50.0,30.0C39.3,30.0 26.0,48.0 18.0,48.0C10.0,48.0 2.0,36.0 2.0,30.0C2.0,24.0 10.0,12.0 18.0,12.0C26.0,12.0 39.3,30.0 50.0,30.0C60.7,30.0 74.0,12.0 82.0,12.0C90.0,12.0 98.0,24.0 98.0,30.0C98.0,36.0 90.0,48.0 82.0,48.0C74.0,48.0 60.7,30.0 50.0,30.0Z;
+                    M50.0,30.0C41.3,30.0 30.5,43.0 24.0,43.0C17.5,43.0 11.0,34.3 11.0,30.0C11.0,25.7 17.5,17.0 24.0,17.0C30.5,17.0 41.3,30.0 50.0,30.0C58.7,30.0 69.5,17.0 76.0,17.0C82.5,17.0 89.0,25.7 89.0,30.0C89.0,34.3 82.5,43.0 76.0,43.0C69.5,43.0 58.7,30.0 50.0,30.0Z;
+                    M50.0,52.0C41.3,52.0 30.7,50.0 24.0,46.0C17.3,42.0 9.7,34.0 10.0,28.0C10.3,22.0 19.3,10.3 26.0,10.0C32.7,9.7 42.0,26.0 50.0,26.0C58.0,26.0 67.3,9.7 74.0,10.0C80.7,10.3 89.7,22.0 90.0,28.0C90.3,34.0 82.7,42.0 76.0,46.0C69.3,50.0 58.7,52.0 50.0,52.0Z;
+                    M50.0,56.0C45.0,48.0 34.7,49.0 28.0,44.0C21.3,39.0 10.3,32.3 10.0,26.0C9.7,19.7 19.3,7.0 26.0,6.0C32.7,5.0 42.0,20.0 50.0,20.0C58.0,20.0 67.3,5.0 74.0,6.0C80.7,7.0 90.3,19.7 90.0,26.0C89.7,32.3 78.7,39.0 72.0,44.0C65.3,49.0 55.0,48.0 50.0,56.0Z;
+                    M50.0,56.0C45.0,48.0 34.7,49.0 28.0,44.0C21.3,39.0 10.3,32.3 10.0,26.0C9.7,19.7 19.3,7.0 26.0,6.0C32.7,5.0 42.0,20.0 50.0,20.0C58.0,20.0 67.3,5.0 74.0,6.0C80.7,7.0 90.3,19.7 90.0,26.0C89.7,32.3 78.7,39.0 72.0,44.0C65.3,49.0 55.0,48.0 50.0,56.0Z;
+                    M50.0,30.0C39.3,30.0 26.0,48.0 18.0,48.0C10.0,48.0 2.0,36.0 2.0,30.0C2.0,24.0 10.0,12.0 18.0,12.0C26.0,12.0 39.3,30.0 50.0,30.0C60.7,30.0 74.0,12.0 82.0,12.0C90.0,12.0 98.0,24.0 98.0,30.0C98.0,36.0 90.0,48.0 82.0,48.0C74.0,48.0 60.7,30.0 50.0,30.0Z"/>
+      </path>
+    </svg>
+    <span class="care__tick"><s></s></span>
+  </div></div>
+</section>
+
+
+<!-- ===== DISTRIBUTION · bg black ===== -->
+<section class="sec sec--black rv">
+  <div class="wrap">
+    <span class="tag">How</span>
+    <h2>We go where gamers already are.</h2>
+    <p class="lede">
+      No new app to download, no new habit to build — the platform lives inside the games
+      and the servers people already use every day.
+    </p>
+  </div>
+</section>
+
+
+<!-- ===== SOURCING SPECIALISTS · bg black ===== -->
+<section class="sec sec--black rv" style="padding-top:0">
+  <div class="wrap wrap--wide">
+    <p class="cap">Where we find our specialists</p>
+
+    <p class="lede pipeline__intro">
+
+      Worldwide there are about <strong>13 mental-health workers per 100,000 people</strong>.<a class="fn" href="#src-3">3</a>
+      A gap that size doesn't close through one channel — so we don't rely on one.
+    </p>
+
+    <ol class="pipeline">
+      <li class="stage">
+        <span class="stage__num">01</span>
+        <h3 class="stage__word">Discover</h3>
+        <p class="stage__body">
+          We post through specialist job boards and physician communities — not general
+          hiring sites.
+        </p>
+      </li>
+
+      <li class="stage">
+        <span class="stage__num">02</span>
+        <h3 class="stage__word">Vet</h3>
+        <p class="stage__body">
+          We check every licence, run a background check, and interview each person twice:
+          once on their clinical record, once on whether they really know games.
+        </p>
+      </li>
+
+      <li class="stage">
+        <span class="stage__num">03</span>
+        <h3 class="stage__word">Onboard</h3>
+        <p class="stage__body">
+          Matched to a guardian server by specialty and by the games they already play —
+          not assigned at random.
+        </p>
+      </li>
+    </ol>
+
+
+    <div class="logorow">
+      <p class="cap">01 — Where we post</p>
+      <div class="darkband">
+        <div class="marquee" data-marquee tabindex="0" role="group" aria-label="Job boards and physician communities we recruit through. Scrollable.">
+          <div class="marquee__track">
+            <span class="logo"><img src="./assets/logos/k_linkedin.png" alt="LinkedIn" loading="lazy"></span>
+            <span class="logo"><img src="./assets/logos/k_glassdoor.png" alt="Glassdoor" loading="lazy"></span>
+            <span class="logo"><img src="./assets/logos/k_flexjobs.png" alt="FlexJobs" loading="lazy"></span>
+            <span class="logo"><img src="./assets/logos/k_ziprecruiter.png" alt="ZipRecruiter" loading="lazy"></span>
+            <span class="logo"><img src="./assets/logos/k_doccafe.png" alt="DocCafe" loading="lazy"></span>
+            <span class="logo"><img src="./assets/logos/k_simplyhired.png" alt="SimplyHired" loading="lazy"></span>
+            <span class="logo"><img src="./assets/logos/k_healthecareers.png" alt="Health eCareers" loading="lazy"></span>
+            <span class="logo"><img src="./assets/logos/k_indeed.png" alt="Indeed" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/k_linkedin.png" alt="" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/k_glassdoor.png" alt="" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/k_flexjobs.png" alt="" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/k_ziprecruiter.png" alt="" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/k_doccafe.png" alt="" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/k_simplyhired.png" alt="" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/k_healthecareers.png" alt="" loading="lazy"></span>
+            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/k_indeed.png" alt="" loading="lazy"></span>
+          </div>
+        </div>
+      </div>
+      <p class="credit-fallback">
+        Also used: PhysEmp, PracticeLink, PracticeMatch and the JAMA Career Center,
+        plus Sermo, a verified physician-only community of over a million members.
+        These are channels we post on — not partners, and not endorsers.
+        <!-- Loxo is deliberately absent: internal recruiter-side tooling, not a public board. -->
+
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== URGENCY · bg red ===== -->
+<section class="sec sec--red rv">
+  <div class="wrap">
+    <span class="tag">Why</span>
+    <h2>For many young people, the friends they play with are real friends. It's time we made those spaces safe too.</h2>
+    <p class="micro">
+      One in five adolescents and young adults is lonely, according to the World Health
+      Organization.<a class="fn" href="#src-9">9</a> And three in four adult players in the US
+      said they were harassed in online games in 2023.<a class="fn" href="#src-10">10</a>
+    </p>
+  </div>
+
+  <div class="icon-mark" role="img"
+       aria-label="A waveform that keeps changing shape, drawn with a trail of earlier frames.">
+    <canvas class="wavemark" aria-hidden="true" id="waveMark" width="640" height="260"></canvas>
+  </div>
+</section>
+
+
+<!-- ===== HOW SUPPORT ESCALATES · bg black ===== -->
+<section class="sec sec--black rv" id="support">
+  <div class="wrap wrap--wide">
+    <span class="tag">How</span>
+    <h2>Support that steps up only when it's needed.</h2>
+    <ol class="pipeline pipeline--5">
+      <li class="stage">
+        <span class="stage__num">01</span>
+        <h3 class="stage__word">Play</h3>
+        <p class="stage__body">Peers and trained moderators keep the room friendly. Most evenings, that's all anyone needs.</p>
+      </li>
+      <li class="stage">
+        <span class="stage__num">02</span>
+        <h3 class="stage__word">Notice</h3>
+        <p class="stage__body">The specialist on the server notices when someone is struggling, and offers a private word — never forced.</p>
+      </li>
+      <li class="stage">
+        <span class="stage__num">03</span>
+        <h3 class="stage__word">Check in</h3>
+        <p class="stage__body">A short conversation and an optional self-check questionnaire. No diagnosis, no therapy on the server.</p>
+      </li>
+      <li class="stage">
+        <span class="stage__num">04</span>
+        <h3 class="stage__word">Refer</h3>
+        <p class="stage__body">If someone needs more, we help them reach real care — a doctor, a therapist, a local service — with someone else, not the person they play with.</p>
+      </li>
+      <li class="stage">
+        <span class="stage__num">05</span>
+        <h3 class="stage__word">Emergency</h3>
+        <p class="stage__body">In danger right now: your local emergency number. In most EU countries, 116&nbsp;123 is the emotional-support line and 116&nbsp;111 the line for children and young people.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ===== INSPIRATION · bg black ===== -->
+<section class="sec sec--black rv">
+  <div class="wrap">
+    <span class="tag">How — proof of demand</span>
+    <h2>Our biggest inspiration is one man.</h2>
+    <p class="lede">
+      Dr. Alok Kanojia — “Dr. K” — is a licensed psychiatrist (BS, University of Texas at Austin;
+      MD/MPH, Tufts University) who struggled with his own video-game addiction as a student
+      before co-founding Healthy Gamer with his wife, Kruti. Today HealthyGamerGG is one of the largest
+      mental-health-for-gamers channels on YouTube, where he talks openly, on camera, about
+      mental health inside gaming culture.
+    </p>
+    <p class="note">
+      Public-record biographical information. Dr. Kanojia and Healthy Gamer are <b>not</b>
+      affiliated with, advisors to, or endorsers of this platform. “Our inspiration” is the
+      only claim made here.
+
+    </p>
+  </div>
+</section>
+
+
+<!-- ===== PROOF EMBED · bg black ===== -->
+<section class="sec sec--black rv" style="padding-top:0">
+  <div class="wrap wrap--wide">
+    <!-- Click-to-load: nothing is requested from YouTube until the visitor
+         asks for the player, and then only from the no-cookie domain. -->
+    <div class="video-embed" data-yt-list="UUlHVl2N3jPEbkNJVx-ItQIQ">
+      <button type="button" class="yt-facade">
+        <img src="https://i.ytimg.com/vi/qAx16zeYcWM/hqdefault.jpg" alt="" loading="lazy">
+        <span class="yt-facade__play" aria-hidden="true"></span>
+        <span class="yt-facade__label">Play HealthyGamerGG's latest videos
+          <small>Loads the YouTube player (youtube-nocookie.com)</small></span>
+      </button>
+    </div>
+
+    <div class="vids">
+      <a class="vid" href="https://www.youtube.com/watch?v=qAx16zeYcWM" target="_blank" rel="noopener">
+        <img src="https://i.ytimg.com/vi/qAx16zeYcWM/hqdefault.jpg" alt="" loading="lazy">
+        <span>Dr. K Explains the Two Types of Egoes</span>
+      </a>
+      <a class="vid" href="https://www.youtube.com/watch?v=jECqtKIp3us" target="_blank" rel="noopener">
+        <img src="https://i.ytimg.com/vi/jECqtKIp3us/hqdefault.jpg" alt="" loading="lazy">
+        <span>The Problem With Motivating Yourself Through Hate</span>
+      </a>
+      <a class="vid" href="https://www.youtube.com/watch?v=cRE0pXDTvIo" target="_blank" rel="noopener">
+        <img src="https://i.ytimg.com/vi/cRE0pXDTvIo/hqdefault.jpg" alt="" loading="lazy">
+        <span>The Best Way to Stay Stuck in Life</span>
+      </a>
+      <a class="vid" href="https://www.youtube.com/watch?v=ZRStcorr8RM" target="_blank" rel="noopener">
+        <img src="https://i.ytimg.com/vi/ZRStcorr8RM/hqdefault.jpg" alt="" loading="lazy">
+        <span>Dr. K Explains How Karma Works</span>
+      </a>
+    </div>
+
+    <a class="video-link" href="https://www.youtube.com/@HealthyGamerGG" target="_blank" rel="noopener">
+      Visit the channel →
+    </a>
+  </div>
+</section>
+
+
+<!-- ===== ROLE OF AI, part 1 · bg red ===== -->
+<section class="sec sec--red rv">
+  <div class="wrap">
+    <span class="tag">How</span>
+    <h2>AI stays behind the scenes.</h2>
+    <p class="lede">
+      It's a support tool for our specialists — task lists, time tracking, technical utility.
+      Nothing more. It never replaces a human professional.
+    </p>
+  </div>
+
+  <div class="icon-mark" role="img"
+       aria-label="An infinity loop, traced continuously by a travelling highlight.">
+    <svg class="ribbon" aria-hidden="true" viewBox="0 0 300 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path class="ribbon__base" d="M282.0,46.0C282.0,50.7 278.4,56.8 272.0,60.1C265.5,63.5 255.2,66.0 243.3,66.0C231.4,66.0 216.1,63.5 200.5,60.1C185.0,56.8 166.8,50.7 150.0,46.0C133.2,41.3 115.0,35.2 99.5,31.9C83.9,28.5 68.6,26.0 56.7,26.0C44.8,26.0 34.5,28.5 28.0,31.9C21.6,35.2 18.0,41.3 18.0,46.0C18.0,50.7 21.6,56.8 28.0,60.1C34.5,63.5 44.8,66.0 56.7,66.0C68.6,66.0 83.9,63.5 99.5,60.1C115.0,56.8 133.2,50.7 150.0,46.0C166.8,41.3 185.0,35.2 200.5,31.9C216.1,28.5 231.4,26.0 243.3,26.0C255.2,26.0 265.5,28.5 272.0,31.9C278.4,35.2 282.0,41.3 282.0,46.0Z" pathLength="100"/>
+      <path class="ribbon__lead" d="M282.0,46.0C282.0,50.7 278.4,56.8 272.0,60.1C265.5,63.5 255.2,66.0 243.3,66.0C231.4,66.0 216.1,63.5 200.5,60.1C185.0,56.8 166.8,50.7 150.0,46.0C133.2,41.3 115.0,35.2 99.5,31.9C83.9,28.5 68.6,26.0 56.7,26.0C44.8,26.0 34.5,28.5 28.0,31.9C21.6,35.2 18.0,41.3 18.0,46.0C18.0,50.7 21.6,56.8 28.0,60.1C34.5,63.5 44.8,66.0 56.7,66.0C68.6,66.0 83.9,63.5 99.5,60.1C115.0,56.8 133.2,50.7 150.0,46.0C166.8,41.3 185.0,35.2 200.5,31.9C216.1,28.5 231.4,26.0 243.3,26.0C255.2,26.0 265.5,28.5 272.0,31.9C278.4,35.2 282.0,41.3 282.0,46.0Z" pathLength="100"/>
+    </svg>
+  </div>
+</section>
+
+
+<!-- ===== ROLE OF AI, part 2 · bg black ===== -->
+<section class="sec sec--black rv">
+  <div class="wrap">
+    <span class="tag">How</span>
+
+    <h2>AI is part of this field whether we like it or not.</h2>
+    <p class="lede">
+      Clinicians use it today for the work around care — notes, summaries, admin — so more of
+      their time goes to people. We're building on how the field works, not against it.
+    </p>
+    <p class="micro">
+      In the American Psychological Association's 2025 survey, <strong>56% of psychologists</strong>
+      had used AI tools in their work in the past year — mostly for writing and paperwork,
+      rarely for clinical decisions.<a class="fn" href="#src-11">11</a> The same association
+      warns that chatbots and wellness apps are no substitute for care.<a class="fn" href="#src-12">12</a>
+      That is the line we hold: AI helps the specialist and never replaces them.
+    </p>
+  </div>
+</section>
+
+
+<!-- ===== FAQ · bg blue ===== -->
+<section class="sec sec--blue rv" id="faq">
+  <div class="wrap">
+    <h2>Questions.</h2>
+
+    <div class="faq">
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="false">Is reh.ab a real service?</button>
+        <div class="faq__a"><div>
+          <p><b>Not yet.</b> reh.ab is a concept project — a pitch-deck website exploring how mental-health support could live inside gaming communities. Everyone shown in the mockups is fictional.</p>
+        </div></div>
+      </div>
+
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="false">Is this a replacement for therapy or emergency care?</button>
+        <div class="faq__a"><div>
+          <p><b>No.</b> A guardian server is a room where you play, with a trained professional there too. It is not therapy. It is not a diagnosis. It is not a crisis line.</p>
+          <p>If someone needs more help than the server can give, its job is to notice early and help them reach real care.</p>
+        </div></div>
+      </div>
+
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="false">How is this different from a normal community server?</button>
+        <div class="faq__a"><div>
+          <p>Communities like Healthy Gamer’s already show how many players want to talk about mental health. The difference here is structural: every guardian server has a licensed professional present by design, and a clear, written path from “this is a hard week” to real care.</p>
+        </div></div>
+      </div>
+
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="false">Isn’t it a conflict for a therapist to play with the people they help?</button>
+        <div class="faq__a"><div>
+          <p>It would be, which is why the roles are kept apart. On a guardian server a specialist supports, notices and refers — they do not treat the people they play with. If someone needs therapy, it happens elsewhere, with someone else.</p>
+        </div></div>
+      </div>
+
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="false">What about players under 18?</button>
+        <div class="faq__a"><div>
+          <p>That is the highest-risk part of the idea, so the rules are strict: background checks for every specialist and moderator, no private messages between staff and minors, never one adult alone with a minor in voice, and parental consent wherever the law requires it.</p>
+        </div></div>
+      </div>
+
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="false">How do you check a specialist before they get a guardian server?</button>
+        <div class="faq__a"><div>
+          <p>Licence check, background check and two interviews — one on their clinical record, one on whether they really know games. Then a match to a server by specialty and by the games they already play.</p>
+        </div></div>
+      </div>
+
+      <div class="faq__item">
+        <button class="faq__q" aria-expanded="false">Who would pay for it?</button>
+        <div class="faq__a"><div>
+          <p>An open question, honestly answered. The most realistic model is game studios and platforms funding guardian servers as part of player safety, with trained peer supporters on each server and one specialist supervising several — which keeps the cost per player realistic.</p>
+        </div></div>
+      </div>
+    </div>
+
+
+    <p class="safety">
+      <b>If you or someone you play with is in danger right now, call your local emergency
+      number.</b> In most EU countries you can also call 116&nbsp;123 (emotional support) or
+      116&nbsp;111 (children and young people).
+      reh.ab is a concept for a place to play with support nearby. It is not therapy, it is
+      not medical care, and it is not an emergency service.
+
+    </p>
+  </div>
+
+  <div class="icon-mark"><div class="qmark" aria-hidden="true">
+    <svg viewBox="0 0 146 431" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9.52616 228.386C0.361922 245.035 21.8874 341.616 40.4656 306.099C59.0439 270.583 105.909 191.757 137.56 119.602C162.556 62.6171 77.5801 8.76585 35.703 0.817627C25.8877 19.9582 2.24406 57.5328 9.52092 57.7636C72.2908 59.7543 75.6825 87.545 69.5321 101.191C69.5321 101.191 36.0101 180.27 9.52616 228.386Z"/>
+      <circle cx="49.4854" cy="390.496" r="39.5626"/>
+    </svg>
+  </div></div>
+</section>
+
+
+<!-- ===== ABOUT THIS PROJECT · bg black — portfolio case study ===== -->
+<section class="sec sec--black rv" id="about">
+  <div class="wrap wrap--wide">
+    <span class="tag">About this project</span>
+    <h2>A concept, researched and built end to end.</h2>
+    <ol class="pipeline pipeline--4">
+      <li class="stage">
+        <span class="stage__num">Problem</span>
+        <h3 class="stage__word">Reach</h3>
+        <p class="stage__body">Mental-health support rarely reaches people where they spend their evenings. Could it live inside gaming communities instead of beside them?</p>
+      </li>
+      <li class="stage">
+        <span class="stage__num">Research</span>
+        <h3 class="stage__word">Sources</h3>
+        <p class="stage__body">WHO, the APA and peer-reviewed work on gaming and wellbeing. Every number on this page links to its source below.</p>
+      </li>
+      <li class="stage">
+        <span class="stage__num">Design</span>
+        <h3 class="stage__word">System</h3>
+        <p class="stage__body">One page, one type scale, one easing curve, one corner slot for every animated mark — and a working, data-driven chat mockup.</p>
+      </li>
+      <li class="stage">
+        <span class="stage__num">Access</span>
+        <h3 class="stage__word">WCAG 2.2</h3>
+        <p class="stage__body">Keyboard and screen-reader support, 44px targets, reduced-motion and high-contrast modes, and contrast that was measured, not guessed.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+<!-- ===== CLOSING BOOKEND · bg --color-red-deep ===== -->
+<section class="sec rv" id="closing">
+  <div class="wrap wrap--wide">
+    <div class="closing-grid">
+      <div class="closing-copy">
+        <span class="tag">Concept project</span>
+        <h2 class="hero-h1">
+          <span class="w">Make</span> <span class="w">an</span>
+          <span class="w d1">impact</span>
+          <span class="w"><span class="d2">toget</span><span class="her">her</span>.</span>
+        </h2>
+        <p class="lede">
+          reh.ab is a concept by Wojciech Lumer — research, design and front-end. Clinicians,
+          designers and studios: I'd love to hear what you think.
+        </p>
+        <div class="closing-cta">
+          <a href="https://www.linkedin.com/in/wojciechlumer/" target="_blank" rel="noopener">Get in touch</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== RESEARCH & SOURCES · bg white ===== -->
+<footer class="sec sec--white rv" id="sources">
+  <div class="wrap wrap--wide">
+   <div class="drawer" id="srcDrawer">
+    <h2>
+      <button class="drawer__toggle" aria-expanded="false" aria-controls="srcBody">
+        Research &amp; sources
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </h2>
+
+    <div class="drawer__body" id="srcBody"><div><div class="drawer__inner">
+
+    <div class="srcbar">
+      <div class="marquee" data-marquee tabindex="0" role="group" aria-label="Publishers and organisations behind the sources listed below. Scrollable.">
+        <div class="marquee__track">
+          <span class="logo"><img src="./assets/logos/src_frontiers.png" alt="Frontiers" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/src_apa.png" alt="American Psychological Association" loading="lazy"></span>
+          <span class="logo"><img src="./assets/logos/src_sciencedirect.png" alt="ScienceDirect" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/src_frontiers.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/src_apa.png" alt="" loading="lazy"></span>
+          <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/src_sciencedirect.png" alt="" loading="lazy"></span>
+        </div>
+      </div>
+
+    </div>
+
+    <ol class="srclist">
+      <li id="src-1"><b>1</b><div>
+        <a href="https://www.uswitch.com/broadband/studies/online-gaming-statistics/" target="_blank" rel="noopener">Uswitch — Online gaming statistics (via Newzoo)</a>
+        <em>~40% of the world's population were online gamers as of 2022; 3.2B global online gamers, projected 5.7B by 2032.</em>
+      </div></li>
+      <li id="src-2"><b>2</b><div>
+        <a href="https://www.health.harvard.edu/blog/the-health-effects-of-too-much-gaming-2020122221645" target="_blank" rel="noopener">Harvard Health Publishing — The health effects of too much gaming (2020)</a>
+        <em>More than two-thirds of Americans play video games; 0.3–1.0% of the general population might have internet gaming disorder.</em>
+      </div></li>
+      <li id="src-3"><b>3</b><div>
+        <a href="https://www.who.int/news/item/02-09-2025-over-a-billion-people-living-with-mental-health-conditions-services-require-urgent-scale-up" target="_blank" rel="noopener">World Health Organization — Over a billion people living with mental health conditions (2025)</a>
+        <em>More than 1 billion people live with mental-health conditions; a global median of 13 mental-health workers per 100,000 people; fewer than 10% receive care in low-income countries, over 50% in higher-income ones.</em>
+      </div></li>
+      <li id="src-4"><b>4</b><div>
+        <a href="https://www.who.int/news-room/questions-and-answers/item/addictive-behaviours-gaming-disorder" target="_blank" rel="noopener">World Health Organization — Addictive behaviours: Gaming disorder</a>
+        <em>Gaming disorder in ICD-11: impaired control, gaming prioritised over other activities, continued despite negative consequences.</em>
+      </div></li>
+      <li id="src-5"><b>5</b><div>
+        <a href="https://www.psychiatry.org/patients-families/internet-gaming" target="_blank" rel="noopener">American Psychiatric Association — Internet gaming</a>
+        <em>DSM-5-TR includes internet gaming disorder among conditions recommended for further research, not as a formal diagnosis.</em>
+      </div></li>
+      <li id="src-6"><b>6</b><div>
+        <a href="https://doi.org/10.1098/rsos.220411" target="_blank" rel="noopener">Vuorre, Johannes, Magnusson & Przybylski — Time spent playing video games is unlikely to impact well-being (Royal Society Open Science, 2022)</a>
+        <em>University of Oxford; ~39,000 players of seven games, using logged play time: hours played had no meaningful effect on wellbeing; feeling compelled to play did.</em>
+      </div></li>
+      <li id="src-7"><b>7</b><div>
+        <a href="https://doi.org/10.1037/a0019440" target="_blank" rel="noopener">Przybylski, Rigby & Ryan — A motivational model of video game engagement (Review of General Psychology, 2010)</a>
+        <em>Self-determination theory applied to games: play that satisfies needs for competence, autonomy and relatedness versus play driven by pressure.</em>
+      </div></li>
+      <li id="src-8"><b>8</b><div>
+        <a href="https://doi.org/10.1016/j.chb.2013.10.059" target="_blank" rel="noopener">Kardefelt-Winther — Towards a model of compensatory internet use (Computers in Human Behavior, 2014)</a>
+        <em>Problematic internet use as a way of coping with negative life situations, rather than an addiction in its own right.</em>
+      </div></li>
+      <li id="src-9"><b>9</b><div>
+        <a href="https://www.who.int/groups/commission-on-social-connection" target="_blank" rel="noopener">WHO Commission on Social Connection — From loneliness to social connection (2025)</a>
+        <em>About 1 in 6 people worldwide are lonely; around 1 in 5 adolescents and young adults.</em>
+      </div></li>
+      <li id="src-10"><b>10</b><div>
+        <a href="https://www.adl.org/resources/report/hate-no-game-hate-and-harassment-online-games-2023" target="_blank" rel="noopener">ADL — Hate is No Game: Hate and harassment in online games 2023</a>
+        <em>76% of US adult players (18–45) experienced harassment in online multiplayer games in 2023.</em>
+      </div></li>
+      <li id="src-11"><b>11</b><div>
+        <a href="https://www.apa.org/monitor/2026/03/ai-reshaping-therapy" target="_blank" rel="noopener">American Psychological Association — AI in the therapist's office (2025 Practitioner Pulse Survey)</a>
+        <em>56% of psychologists used AI tools in their work at least once in the past year, up from 29% in 2024; mostly for writing and admin, rarely for clinical tasks.</em>
+      </div></li>
+      <li id="src-12"><b>12</b><div>
+        <a href="https://www.apa.org/news/press/releases/2025/11/ai-wellness-apps-mental-health" target="_blank" rel="noopener">American Psychological Association — Health advisory on generative AI chatbots and wellness apps (2025)</a>
+        <em>Chatbots and wellness apps lack the evidence and regulation to be relied on for mental-health care.</em>
+      </div></li>
+      <li><b>+</b><div>
+        Further reading:
+        <a href="https://doi.org/10.1177/0004867420962851" target="_blank" rel="noopener">Stevens et al., global prevalence of gaming disorder (2021)</a>,
+        <a href="https://theconversation.com/study-shows-video-games-can-improve-mental-wellbeing-but-you-can-have-too-much-of-a-good-thing-236861" target="_blank" rel="noopener">The Conversation</a>,
+        <a href="https://www.frontiersin.org/research-topics/12085/digital-games-and-mental-health/magazine" target="_blank" rel="noopener">Frontiers</a>,
+        <a href="https://www.statista.com/topics/1680/gaming/" target="_blank" rel="noopener">Statista</a>,
+        <a href="https://www.physemp.com/blog/7-best-physician-job-boards/" target="_blank" rel="noopener">PhysEmp</a>,
+        <a href="https://www.sermo.com/" target="_blank" rel="noopener">Sermo</a>.
+      </div></li>
+    </ol>
+
+    </div></div></div><!-- /drawer__inner /overflow /drawer__body -->
+   </div><!-- /drawer -->
+
+    <div class="drawer" id="a11yDrawer">
+      <h2>
+        <button class="drawer__toggle" aria-expanded="false" aria-controls="a11yStatement">
+          Accessibility statement
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.4"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </h2>
+      <div class="drawer__body" id="a11yStatement"><div><div class="drawer__inner">
+        <p class="a11y-stmt">
+          We aim to meet <strong>WCAG 2.2 level AA</strong>. The page has been checked for
+          keyboard access, screen-reader labelling, reduced motion and target size, and the
+          accessibility controls in the top-left corner let you turn motion off, raise contrast
+          and change text size at any time.
+        </p>
+        <p class="a11y-stmt">
+          <strong>One known contrast gap.</strong> White text on the bright red sections
+          measures 4.24:1 — enough for the large headlines, short of the 4.5:1 AA needs for
+          smaller text. Turn on <em>High contrast</em> and those sections switch to a darker red
+          that passes at every size.
+        </p>
+        <p class="a11y-stmt">
+          <strong>What we know is not finished yet.</strong> The chat panel and the
+          specialist cards are mockups, so the people and conversations in them are not
+          real. The avatars are decorative and carry no information. The
+          YouTube player is a third-party embed, so its captions depend on what the
+          channel has published. We have tested with keyboard and automated checks, but
+          not yet with a screen-reader user.
+        </p>
+        <p class="a11y-stmt">
+          <strong>Found a problem?</strong> Tell us and we will fix it —
+          <a href="https://www.linkedin.com/in/wojciechlumer/" target="_blank" rel="noopener">message us on LinkedIn</a>.
+          Please say which page section it was and what got in your way.
+        </p>
+        <p class="a11y-stmt a11y-stmt--date">Last reviewed: October 2026.</p>
+      </div></div></div>
+    </div>
+
+    <div class="colophon">
+      <b>reh.ab</b>
+      <span>A concept project by Wojciech Lumer. Organisations listed on this page are cited as sources or named as distribution and recruitment channels. None of them endorse this project.</span>
+    </div>
+  </div>
+</footer>
+</main>
+
+
+<script src="./js/main.js"></script>
+</body>
+</html>

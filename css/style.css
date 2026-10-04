@@ -1,0 +1,1355 @@
+/* ===========================================================================
+   1. FONTS — Helvetica only, from the supplied files ======================================================================== */
+
+/* ===========================================================================
+   2. TOKENS ======================================================================== */
+:root{
+  --color-black:#000000;
+  --color-white:#FFFFFF;
+  --color-red:#EE243B;
+  --color-red-deep:#CA002A;
+  --color-blue:#93B7D5;
+
+  --gradient-her:linear-gradient(120deg,#E3297D 0%,#72527B 25%,#9AA5C3 50%,#8D998D 75%,#FCC59C 100%);
+  /* same five stops, reversed and re-angled — the second drifting layer */
+  --gradient-her-alt:linear-gradient(302deg,#FCC59C 0%,#8D998D 25%,#9AA5C3 50%,#72527B 75%,#E3297D 100%);
+
+  /* System fonts only: Helvetica ships with macOS and iOS; everyone else gets
+     Arial. The rounded face is used if it is installed, otherwise Arial
+     Rounded (also a macOS system font). No font files are served — the
+     licensed Helvetica files cannot be redistributed. */
+  --font:"Helvetica","Helvetica Neue",Arial,sans-serif;
+  --font-rounded:"Helvetica Rounded","Helvetica Rounded Bold","HelveticaRounded-Bold","Arial Rounded MT Bold","Helvetica",Arial,sans-serif;
+
+  /* the type scale. Five sizes, nothing else: every
+     font-size on the page resolves to one of these. Exempt by design, since
+     they are proportions rather than sizes: footnote superscripts (.62em of
+     their parent), the SOS icon glyph (sized to --icon-unit like every other
+     corner mark), and the root % the accessibility text-size switch sets. */
+  --font-size-display:clamp(2.5rem,6vw,4.5rem);      /* hero/closing headline, big stats */
+  --font-size-h1:clamp(1.75rem,4vw,3rem);            /* every other section headline     */
+  --font-size-body:clamp(1rem,1.2vw,1.125rem);       /* all paragraph copy               */
+  --font-size-label:clamp(.8rem,1vw,.95rem);         /* UI labels, stage nums, buttons   */
+  --font-size-caption:clamp(.7rem,.9vw,.85rem);      /* footnotes, attributions          */
+  
+  --content-margin-left:clamp(20px,5.5vw,160px);
+  /* the content shell stops growing at --shell-max and
+     centres itself beyond that, so an ultra-wide monitor gets equal breathing
+     room on both sides instead of a dead gap on the right. Below that width
+     the max falls back to --content-margin-left and nothing changes.
+     Because the full-bleed bands negate exactly this same value, their width
+     always resolves to the section's full width — no overflow either way. */
+  --shell-max:1400px;
+  --pad-y:clamp(56px,10vw,140px);
+  --pad-x:max(var(--content-margin-left), calc((100vw - var(--shell-max)) / 2));
+  --measure:840px;
+  
+  --ease-standard:cubic-bezier(.4,0,.2,1);
+  --ease:var(--ease-standard);        /* alias so older rules inherit it */
+
+  --duration-tick:1.4s;               /* ticker hold per word            */
+  --duration-slide:700ms;             /* ticker scroll between words     */
+  --duration-drawer:350ms;            /* drawer / accordion open+close   */
+  --duration-reveal:600ms;            /* scroll-in                       */
+  --duration-loop:7s;                 /* ambient loading bar             */
+  --duration-breathe:5s;              /* orb breathing                   */
+  --duration-spin:26s;                /* orb spark rotation              */
+  --duration-morph:8s;                /* heart morph cycle               */
+  --duration-lit:1.6s;                /* the "toget-her" reveal          */
+  --duration-gradient:24s;            /* gradient drift                  */
+  --duration-ribbon:9s;               /* spiral ribbon twist             */
+  --duration-wave:5.5s;               /* waveform morph                  */
+
+  /* one standard for every animated icon mark: same stroke
+     weight, same box height, same bottom-right slot in its section. The SOS
+     wordmark is the reference the rest are matched to. */
+  --icon-stroke:2px;
+  --icon-width:clamp(180px,22vw,300px);   /* the shared footprint */
+  --icon-unit:calc(var(--icon-width) * .46);
+  --icon-bottom:clamp(36px,7vw,90px);
+  --duration-morse:6.8s;              /* one full SOS cycle (dot = 200ms) */
+  --marquee-speed:42;                 /* px per second, set per row in JS */
+
+  /* --- the two info bands share one geometry --------------------- */
+  --band-pad-y:clamp(20px,2.6vw,30px);
+  --band-row-h:clamp(34px,4.2vw,46px);
+
+  /* --- logo rows (fixes 6/7/9) ------------------------------------------- */
+  --logo-h:clamp(26px,3vw,38px);
+  /* Cap width at ~4.4x the height: square marks render at full height, and
+     only very long wordmarks (ScienceDirect, Glassdoor) scale down a little,
+     which is what makes the row read as optically even rather than
+     mathematically even. */
+  --logo-maxw:calc(var(--logo-h) * 4.4);
+  --logo-gap:clamp(34px,5vw,68px);
+}
+
+/* ===========================================================================
+   3. BASE
+   ======================================================================== */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--color-black);
+  color:var(--color-white);
+  font-family:var(--font);
+  font-weight:400;
+  line-height:1.5;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+img{max-width:100%;display:block}
+a{color:inherit}
+::selection{background:var(--color-white);color:var(--color-red)}
+/* a two-tone ring. currentColor failed on the FAQ blue
+   (white on #93B7D5 is 2.1:1); a black ring inside a white halo stays visible
+   on black, both reds, the blue and the white footer alike. */
+:focus-visible{
+  outline:3px solid var(--color-black);
+  outline-offset:2px;
+  box-shadow:0 0 0 6px var(--color-white);
+  border-radius:3px;
+}
+/* SC 2.4.11: the widget is fixed at the top-left, so anything
+   scrolled into view by keyboard has to land clear of it */
+:where(a,button,input,select,textarea,summary,[tabindex]){scroll-margin-top:96px}
+
+/* ---- section shells ---- */
+.sec{position:relative;padding:var(--pad-y) var(--pad-x);overflow:hidden}
+.sec--black{background:var(--color-black);color:var(--color-white)}
+.sec--red{background:var(--color-red);color:var(--color-white)}
+.sec--blue{background:var(--color-blue);color:var(--color-white)}
+.sec--white{background:var(--color-white);color:var(--color-black)}
+/* left-aligned, never centred — centring is what made the left edge drift
+   between the 840px and 1180px sections */
+.wrap{max-width:var(--measure);margin:0;width:100%}
+.wrap--wide{max-width:1180px}
+
+/* ---- type scale ---- */
+h1,h2,h3{margin:0;font-weight:700;letter-spacing:-.025em;line-height:1.04}
+h1{font-size:var(--font-size-display)}
+h2{font-size:var(--font-size-h1)}
+h3{font-size:var(--font-size-body);letter-spacing:-.01em;line-height:1.25}
+p{margin:0}
+.lede{
+  font-size:var(--font-size-body);
+  line-height:1.55;max-width:62ch;margin-top:clamp(28px,4vw,44px);
+  color:rgba(255,255,255,.88);
+}
+.sec--white .lede{color:rgba(0,0,0,.78)}
+.micro{
+  font-size:var(--font-size-body);
+  line-height:1.65;max-width:70ch;
+  color:rgba(255,255,255,.72);
+  margin-top:clamp(32px,6vw,72px);
+}
+.micro em{font-style:italic}
+.micro strong{font-weight:700;color:rgba(255,255,255,.95)}
+
+/* the twisted-ribbon infinity, drawn on canvas so the band
+   can change width and shade along its length the way spirala_.png does.
+   the trailing-frame waveform, same technique. */
+.wavemark{display:block}
+/* flat outline, shared stroke weight */
+.ribbon path{
+  fill:none;stroke:var(--color-white);stroke-width:var(--icon-stroke);
+  vector-effect:non-scaling-stroke;stroke-linecap:round;
+}
+.ribbon__base{opacity:.38}
+.ribbon__lead{
+  stroke-dasharray:20 80;
+  animation:ribbonTrace var(--duration-ribbon) var(--ease-standard) infinite;
+}
+@keyframes ribbonTrace{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+
+/* ---- hero ticker, rebuilt. It scrolls up by one line at a
+   time on a soft ease rather than cutting, and the viewport is three lines
+   tall with a fading mask, so the next word is already visible underneath at
+   reduced opacity before it arrives. The track carries two extra copies so
+   there is always something queued below; when it reaches the first copy the
+   transform snaps back with the transition off, which is invisible because
+   the frame is identical. */
+.ticker{
+  --line:clamp(22px,2.6vw,30px);
+  height:calc(var(--line) * 3.1);overflow:hidden;
+  margin-top:clamp(34px,6vw,60px);
+  -webkit-mask-image:linear-gradient(180deg,#000 0,#000 27%,rgba(0,0,0,.5) 54%,rgba(0,0,0,.19) 78%,rgba(0,0,0,0) 100%);
+  mask-image:linear-gradient(180deg,#000 0,#000 27%,rgba(0,0,0,.5) 54%,rgba(0,0,0,.19) 78%,rgba(0,0,0,0) 100%);
+}
+.ticker__track{display:flex;flex-direction:column;will-change:transform}
+.ticker__track>span{
+  height:var(--line);flex:none;display:flex;align-items:center;white-space:nowrap;
+  font-weight:700;letter-spacing:-.02em;color:var(--color-white);
+  font-size:var(--font-size-label);
+}
+
+/* ---- one-time typewriter reveal on the headline.
+   Per-character opacity only, so the dimming on "impact"/"toget" (which lives
+   on the parent) still multiplies through untouched. */
+.hero-h1 .ch{
+  opacity:0;display:inline-block;font-style:normal;
+  position:relative;z-index:1;            /* keeps the glyphs above the glow */
+  transition:opacity 240ms var(--ease-standard);
+}
+.hero-h1.typed .ch{opacity:1;transition-delay:calc(var(--i) * 26ms)}
+
+/* the shared slot every icon mark sits in */
+.icon-mark{
+  position:absolute;right:var(--pad-x);bottom:var(--icon-bottom);
+  height:var(--icon-unit);
+  display:flex;align-items:flex-end;justify-content:flex-end;
+  pointer-events:none;user-select:none;z-index:1;
+}
+.icon-mark>canvas,.icon-mark>svg{height:100%;width:auto;display:block}
+@media(max-width:860px){
+  .icon-mark{position:static;margin:clamp(28px,6vw,48px) 0 0 auto}
+}
+
+.tag{
+  display:inline-block;font-family:var(--font-rounded);
+  font-size:var(--font-size-label);letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);margin-bottom:clamp(20px,3vw,34px);
+}
+.sec--white .tag{color:rgba(0,0,0,.45)}
+.sec--blue .tag{color:rgba(255,255,255,.72)}
+
+/* footnote refs */
+.fn{
+  font-size:.62em;vertical-align:super;line-height:0;
+  text-decoration:none;font-weight:700;
+  border-bottom:none;opacity:1;padding:0 .08em;
+  position:relative;display:inline-block;
+}
+/* SC 2.5.8 wants 24x24 minimum; the marker itself stays the
+   size it is, the hit area is padded out around it */
+.fn::after{
+  content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:max(100%,24px);height:max(100%,24px);
+}
+.fn:hover{text-decoration:underline}
+
+/* caption label above a component */
+.cap{
+  font-family:var(--font-rounded);font-size:var(--font-size-label);letter-spacing:.16em;
+  text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:18px;
+}
+
+/* ===========================================================================
+   4. SCROLL PROGRESS HAIRLINE ======================================================================== */
+#progress{
+  position:fixed;top:0;left:0;height:2px;width:100%;
+  transform:scaleX(0);transform-origin:0 50%;
+  background:var(--color-red);z-index:90;pointer-events:none;
+  will-change:transform;
+}
+
+/* ===========================================================================
+   5. LOADER ======================================================================== */
+html:not(.js) #loader{display:none}
+#loader{
+  position:fixed;inset:0;z-index:100;background:var(--color-red-deep);
+  display:grid;place-items:center;
+  transition:opacity var(--duration-reveal) var(--ease-standard),visibility var(--duration-reveal);
+}
+#loader.done{opacity:0;visibility:hidden}
+.loader-inner{display:grid;place-items:center;gap:26px;text-align:center}
+
+/* ===========================================================================
+   ======================================================================== */
+.orb{
+  --orb-size:clamp(132px,17vw,208px);
+  width:var(--orb-size);height:var(--orb-size);
+  position:relative;display:grid;place-items:center;flex:none;
+}
+/* in the corner slot it takes the shared icon footprint */
+.icon-mark .orb{--orb-size:var(--icon-unit)}
+/* ambient gradient glow, slow pulse */
+.orb__glow{
+  position:absolute;inset:-16%;border-radius:50%;
+  background:var(--gradient-her);filter:blur(28px);
+  animation:orbGlow var(--duration-breathe) var(--ease-standard) infinite;
+  will-change:opacity,transform;
+}
+.orb__ring{
+  position:relative;width:64%;height:64%;border-radius:50%;
+  border:var(--icon-stroke) solid var(--color-white);
+  animation:orbBreathe var(--duration-breathe) var(--ease-standard) infinite;
+}
+/* the spark: slow continuous rotation inside the ring */
+.orb__spark{
+  position:absolute;width:24%;height:24%;
+  fill:var(--color-white);opacity:.92;
+  animation:orbSpin var(--duration-spin) linear infinite;
+}
+@keyframes orbBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+@keyframes orbGlow{0%,100%{opacity:.34;transform:scale(1)}50%{opacity:.62;transform:scale(1.07)}}
+@keyframes orbSpin{to{transform:rotate(360deg)}}
+
+/* ===========================================================================
+   7. HERO (section 1)
+   ======================================================================== */
+/* / the two bookends use the deep red; every mid-deck
+   statement slide stays on --color-red. */
+#hero{
+  background:var(--color-red-deep);
+  min-height:100svh;display:flex;flex-direction:column;
+  padding-bottom:0;
+}
+/* the copy takes the free space, so the gradient band always lands flush on
+   the hero's bottom edge instead of leaving a strip of red beneath it */
+#hero>.wrap{margin-block:auto}
+/* portfolio framing — says up front that this is a concept, not a service */
+#hero{position:relative}
+.concept-flag{
+  position:absolute;top:24px;right:var(--pad-x);z-index:3;
+  font-family:var(--font-rounded);font-size:var(--font-size-label);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--color-white);
+  border:1.5px solid rgba(255,255,255,.7);border-radius:99px;padding:6px 14px;
+}
+.concept-flag a{color:inherit;text-decoration:none}
+.concept-flag a:hover{text-decoration:underline}
+@media(max-width:600px){.concept-flag{top:20px;padding:5px 11px;letter-spacing:.08em}}
+.hero-grid{
+  display:flex;align-items:center;gap:clamp(28px,5vw,64px);
+  flex-wrap:wrap-reverse;
+}
+.hero-copy{flex:1 1 440px;min-width:0}
+
+.hero-h1{font-size:var(--font-size-display);line-height:1.02}
+.hero-h1 .w{display:inline-block}
+.hero-h1 .d1,.hero-h1 .d2{transition:opacity var(--duration-lit) var(--ease-standard)}
+.hero-h1 .d1{opacity:1}
+.hero-h1 .d2{opacity:1}
+.hero-h1.lit .d1{opacity:.66}
+.hero-h1.lit .d2{opacity:.3}
+.hero-h1 .her{position:relative}
+/* a soft light breathing behind "her" only. The rest of the
+   headline gets the typewriter and nothing else. */
+.hero-h1 .her::before{
+  content:"";position:absolute;left:50%;top:52%;
+  width:165%;height:150%;transform:translate(-50%,-50%);
+  background:radial-gradient(closest-side,rgba(255,255,255,.6),rgba(255,255,255,0) 74%);
+  filter:blur(12px);opacity:0;pointer-events:none;
+  transition:opacity var(--duration-lit) var(--ease-standard);
+}
+.hero-h1.typed .her::before{
+  animation:herGlow var(--duration-breathe) var(--ease-standard) infinite;
+}
+@keyframes herGlow{
+  0%,100%{opacity:.4;transform:translate(-50%,-50%) scale(1)}
+  50%    {opacity:.92;transform:translate(-50%,-50%) scale(1.09)}
+}
+
+/* ---- the two info bands share one geometry ---------------------- */
+.band{
+  padding:var(--band-pad-y) var(--pad-x);
+  margin-left:calc(var(--pad-x)*-1);margin-right:calc(var(--pad-x)*-1);
+}
+.band__row{
+  height:var(--band-row-h);display:flex;align-items:center;
+  gap:clamp(12px,2.2vw,26px);flex-wrap:nowrap;
+  position:relative;z-index:2;
+}
+
+/* ---- the gradient drifts instead of sitting still.
+   Two layers of the same five brand stops at different angles, each drifting
+   its background-position on its own clock, with the upper one breathing in
+   and out. Both keyframe loops start and end on the same frame, so there is
+   no jump cut. Applies to both gradient surfaces on the page. */
+.band--gradient{
+  position:relative;
+  background-image:var(--gradient-her);
+  background-size:220% 220%;
+  animation:gradientDrift var(--duration-gradient) var(--ease-standard) infinite;
+}
+.band--gradient::before{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background-image:var(--gradient-her-alt);
+  background-size:250% 250%;
+  animation:gradientDrift calc(var(--duration-gradient) * 1.45) var(--ease-standard) infinite reverse,
+            gradientBreathe calc(var(--duration-gradient) * .85) var(--ease-standard) infinite;
+}
+@keyframes gradientDrift{
+  0%  {background-position:0% 50%}
+  25% {background-position:55% 18%}
+  50% {background-position:100% 50%}
+  75% {background-position:45% 82%}
+  100%{background-position:0% 50%}
+}
+@keyframes gradientBreathe{0%,100%{opacity:.24}50%{opacity:.6}}
+
+.proof{
+  margin-top:clamp(40px,7vw,80px);
+  padding-bottom:clamp(64px,10vw,140px);
+}
+.proof::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(238,36,59,0) 30%,var(--color-red) 100%);
+}
+.avatars{display:flex;flex:none}
+/* quote and avatar trio crossfade each time the bar resets */
+.proof p,.avatars{transition:opacity 380ms var(--ease-standard)}
+.proof p.is-swapping,.avatars.is-swapping{opacity:0}
+/* looping video, circle-masked */
+.avatars video{
+  width:34px;height:34px;border-radius:50%;object-fit:cover;display:block;
+  border:2px solid rgba(255,255,255,.9);margin-right:-11px;
+  background:rgba(255,255,255,.25);
+}
+.proof p{
+  font-size:var(--font-size-body);color:var(--color-white);
+  flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.proof p b{font-weight:700}
+/* pushed to the right edge, the same --pad-x line the
+   corner icon-marks (SOS, spiral, wave, heart) sit on */
+.proof-line{
+  margin-left:auto;
+  flex:0 0 190px;height:9px;border-radius:99px;overflow:hidden;
+  border:1.5px solid rgba(255,255,255,.85);padding:1.5px;
+}
+/* ambient fill, 0→100% then an instant cut back to 0 */
+.proof-line span{
+  display:block;height:100%;width:100%;border-radius:99px;
+  background:rgba(255,255,255,.95);
+  transform-origin:left center;transform:scaleX(0);
+  animation:fillBar var(--duration-loop) linear infinite;
+}
+/* transform, not width — layout-free so it stays cheap on low-end mobile */
+@keyframes fillBar{0%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+@media(max-width:600px){.proof-line{display:none}}
+
+/* ===========================================================================
+   ======================================================================== */
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(20px,3vw,44px);margin-top:clamp(44px,6vw,72px);
+  border-top:1px solid rgba(255,255,255,.25);padding-top:clamp(28px,4vw,44px);
+}
+
+.stat b{
+  display:block;font-family:var(--font);font-weight:700;
+  font-size:var(--font-size-display);line-height:.95;letter-spacing:-.03em;
+}
+.stat span{
+  display:block;margin-top:12px;font-size:var(--font-size-caption);
+  line-height:1.4;color:rgba(255,255,255,.78);
+}
+@media(max-width:620px){.stats{grid-template-columns:1fr;gap:26px}}
+
+/* SOS outlined mark (bottom-right corner).
+   blinks real Morse: ··· −−− ···  Dot = 200ms on, dash =
+   600ms, 200ms between signals, 600ms between letters, 1400ms before the
+   cycle repeats. Total 6800ms = --duration-morse. Opacity only, so nothing
+   in the layout moves. */
+.sos{
+  font-weight:700;font-size:var(--icon-unit);line-height:1;
+  color:transparent;-webkit-text-stroke:var(--icon-stroke) rgba(255,255,255,.85);
+  letter-spacing:-.02em;white-space:nowrap;
+  animation:sosMorse var(--duration-morse) linear infinite;
+}
+/* the second, smaller mark with its superscript 1, built in
+   the same outlined style and blinking the same Morse so the two read as a
+   matched pair */
+.sos--alt{font-size:calc(var(--icon-unit) * .30)}
+.sos sup{font-size:.42em;vertical-align:super;line-height:0;margin-left:.04em}
+@keyframes sosMorse{
+  /* S  ···  */
+  0%,2.94%      {opacity:1}
+  2.95%,5.88%   {opacity:.16}
+  5.89%,8.82%   {opacity:1}
+  8.83%,11.76%  {opacity:.16}
+  11.77%,14.71% {opacity:1}
+  14.72%,23.53% {opacity:.16}   /* letter gap */
+  /* O  −−−  */
+  23.54%,32.35% {opacity:1}
+  32.36%,35.29% {opacity:.16}
+  35.30%,44.12% {opacity:1}
+  44.13%,47.06% {opacity:.16}
+  47.07%,55.88% {opacity:1}
+  55.89%,64.71% {opacity:.16}   /* letter gap */
+  /* S  ···  */
+  64.72%,67.65% {opacity:1}
+  67.66%,70.59% {opacity:.16}
+  70.60%,73.53% {opacity:1}
+  73.54%,76.47% {opacity:.16}
+  76.48%,79.41% {opacity:1}
+  79.42%,100%   {opacity:.16}   /* word gap */
+}
+
+/* ===========================================================================
+   9. DISCORD-STYLE VISUALISATION Original, stylised reconstruction of a chat-app layout.
+   No real Discord logo, wordmark or screenshot is used anywhere in here.
+   ======================================================================== */
+.viz{
+  display:grid;grid-template-columns:62px 190px 1fr 244px;
+  height:clamp(400px,48vw,520px);
+  border:1px solid rgba(255,255,255,.14);border-radius:12px;overflow:hidden;
+  background:#0b0b0d;font-size:var(--font-size-label);position:relative;
+}
+.viz__rail{background:#08080a;padding:12px 0;display:flex;flex-direction:column;
+  align-items:center;gap:11px;border-right:1px solid rgba(255,255,255,.06)}
+.viz__rail button,.viz__add{
+  width:38px;height:38px;border:0;border-radius:14px;display:grid;place-items:center;
+  font-family:var(--font-rounded);font-size:var(--font-size-label);color:rgba(255,255,255,.75);
+  background:rgba(255,255,255,.09);flex:none;
+  transition:border-radius var(--duration-drawer) var(--ease-standard),
+             background var(--duration-drawer) var(--ease-standard),
+             color var(--duration-drawer) var(--ease-standard);
+}
+.viz__rail button{cursor:pointer}
+.viz__rail button:hover{background:rgba(255,255,255,.18);color:#fff;border-radius:12px}
+.viz__rail button.on{background:var(--color-red);color:#fff;border-radius:12px}
+.viz__add{color:rgba(255,255,255,.4)}
+.viz__rail hr{width:20px;border:0;border-top:1px solid rgba(255,255,255,.12);margin:3px 0}
+
+.viz__chan{background:#0e0e11;padding:14px 12px;border-right:1px solid rgba(255,255,255,.06);
+  display:flex;flex-direction:column;gap:3px;min-width:0}
+.viz__chan h4{
+  margin:0 0 12px;font-size:var(--font-size-label);font-weight:700;letter-spacing:-.01em;
+  color:rgba(255,255,255,.92);display:flex;align-items:center;gap:6px;
+}
+.viz__chan h4::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--color-red)}
+.viz__chan b{
+  font-size:var(--font-size-caption);font-family:var(--font-rounded);letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(255,255,255,.35);margin:10px 0 4px;
+}
+.viz__vc{
+  display:block;padding:5px 8px;border-radius:5px;color:rgba(255,255,255,.4);font-size:var(--font-size-label);
+}
+/* channels are real buttons now */
+.viz__tabs{display:flex;flex-direction:column;gap:2px}
+.viz__tabs button{
+  display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;
+  padding:6px 8px;border-radius:5px;color:rgba(255,255,255,.55);
+  font-family:var(--font);font-size:var(--font-size-label);
+  transition:background var(--duration-drawer) var(--ease-standard),
+             color var(--duration-drawer) var(--ease-standard);
+}
+.viz__tabs button:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85)}
+.viz__tabs button.on{background:rgba(255,255,255,.1);color:#fff;font-weight:700}
+
+.viz__main{display:flex;flex-direction:column;min-width:0;background:#0b0b0d}
+.viz__bar{
+  padding:11px 16px;border-bottom:1px solid rgba(255,255,255,.07);
+  font-size:var(--font-size-label);color:rgba(255,255,255,.6);font-weight:700;
+  display:flex;align-items:center;gap:10px;
+}
+.viz__bar em{
+  font-style:normal;font-weight:400;font-size:var(--font-size-caption);color:rgba(255,255,255,.4);
+  margin-left:auto;display:flex;align-items:center;gap:6px;
+}
+.viz__bar em::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:#3BA55D;flex:none;
+  animation:livePulse 2.4s var(--ease-standard) infinite;
+}
+@keyframes livePulse{0%,100%{opacity:1}50%{opacity:.35}}
+/* the three feeds are stacked and crossfade between each other */
+.viz__panels{position:relative;flex:1;overflow:hidden}
+.viz__panel{
+  position:absolute;inset:0;padding:14px 16px;
+  display:flex;flex-direction:column;gap:12px;justify-content:flex-end;
+  opacity:0;pointer-events:none;
+  transition:opacity var(--duration-drawer) var(--ease-standard);
+}
+.viz__panel.on{opacity:1}
+.rx{
+  display:inline-block;margin-top:6px;font-size:var(--font-size-caption);line-height:1;
+  padding:4px 7px;border-radius:99px;
+  background:rgba(255,255,255,.09);color:rgba(255,255,255,.7);
+}
+.msg{display:flex;gap:10px;opacity:0;transform:translateY(7px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.msg.on{opacity:1;transform:none}
+.msg .body{min-width:0}
+.msg strong{display:block;font-size:var(--font-size-label);margin-bottom:2px;font-weight:700}
+.msg p{font-size:var(--font-size-label);line-height:1.45;color:rgba(255,255,255,.72)}
+.msg .pro{color:#A9CBEA}
+.msg .pro::after{
+  content:"VERIFIED SPECIALIST";font-family:var(--font-rounded);font-size:var(--font-size-label);
+  letter-spacing:.09em;background:rgba(147,183,213,.2);color:#BBD6EE;
+  padding:2px 5px;border-radius:99px;margin-left:7px;vertical-align:1px;
+}
+.viz__typing{
+  padding:0 16px 13px;font-size:var(--font-size-caption);color:rgba(255,255,255,.4);
+  opacity:0;transition:opacity .4s;
+}
+.viz__typing.on{opacity:1}
+.viz__typing b{display:inline-flex;gap:3px;vertical-align:middle;margin-right:6px}
+.viz__typing b s{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.5);
+  animation:blip 1.1s infinite}
+.viz__typing b s:nth-child(2){animation-delay:.16s}
+.viz__typing b s:nth-child(3){animation-delay:.32s}
+@keyframes blip{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-2px)}}
+
+.viz__members{background:#0e0e11;border-left:1px solid rgba(255,255,255,.06);padding:14px 12px;min-width:0}
+.viz__members b{
+  display:block;font-size:var(--font-size-caption);font-family:var(--font-rounded);letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(255,255,255,.35);margin:0 0 10px;
+}
+.viz__members b+b{margin-top:16px}
+.mem{
+  display:flex;align-items:center;gap:9px;padding:5px 6px;border-radius:6px;
+  transition:background .4s var(--ease);
+}
+.mem figure{position:relative;margin:0;flex:none}
+.mem u{
+  position:absolute;right:-1px;bottom:-1px;width:9px;height:9px;border-radius:50%;
+  border:2px solid #0e0e11;background:#4b4b50;transition:background .4s;
+}
+.mem.online u{background:#3BA55D}
+.mem.idle u{background:#FAA61A}
+.mem span{font-size:var(--font-size-label);color:rgba(255,255,255,.58);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mem.online span{color:rgba(255,255,255,.9)}
+.badge{
+  font-family:var(--font-rounded);font-size:var(--font-size-caption);letter-spacing:.08em;
+  background:rgba(147,183,213,.18);color:#BBD6EE;border-radius:99px;
+  padding:3px 7px;margin-left:auto;flex:none;transition:box-shadow .5s,background .5s;
+}
+
+/* real faces replace the abstract gradient fills */
+.av{border-radius:50%;object-fit:cover;display:block;background:rgba(255,255,255,.08)}
+/* every person is a button that opens their profile */
+.who{
+  background:none;border:0;padding:0;margin:0;cursor:pointer;display:flex;
+  align-items:center;gap:9px;font-family:var(--font);min-width:0;
+  color:rgba(255,255,255,.58);font-size:var(--font-size-label);text-align:left;
+  transition:color var(--duration-drawer) var(--ease-standard);
+}
+.who span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.who:hover,.who:focus-visible{color:#fff}
+.mem.online .who,.who--pro{color:rgba(255,255,255,.9)}
+.msg__name{
+  background:none;border:0;padding:0;margin:0 0 2px;cursor:pointer;display:block;
+  font-family:var(--font);font-size:var(--font-size-label);font-weight:700;color:var(--color-white);
+  transition:opacity var(--duration-drawer) var(--ease-standard);
+}
+.msg__name:hover{opacity:.72;text-decoration:underline}
+.msg__name.pro{color:#A9CBEA}
+.msg__name.pro::after{
+  content:"VERIFIED SPECIALIST";font-family:var(--font-rounded);font-size:var(--font-size-label);
+  letter-spacing:.09em;background:rgba(147,183,213,.2);color:#BBD6EE;
+  padding:2px 5px;border-radius:99px;margin-left:7px;vertical-align:1px;
+  display:inline-block;white-space:nowrap;
+}
+
+/* the profile popup */
+.prof{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-46%) scale(.96);
+  width:min(300px,86%);z-index:5;
+  background:#15151a;border:1px solid rgba(255,255,255,.16);border-radius:12px;
+  padding:18px;box-shadow:0 18px 50px rgba(0,0,0,.6);
+  opacity:0;pointer-events:none;
+  transition:opacity var(--duration-drawer) var(--ease-standard),
+             transform var(--duration-drawer) var(--ease-standard);
+}
+.prof.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.prof__close{
+  position:absolute;right:8px;top:6px;background:none;border:0;cursor:pointer;
+  color:rgba(255,255,255,.5);font-size:var(--font-size-body);line-height:1;padding:4px 8px;
+}
+.prof__close:hover{color:#fff}
+.prof__av{width:56px;height:56px;border-radius:50%;object-fit:cover;display:block}
+.prof__head{margin-top:12px;display:grid;gap:6px}
+.prof__head strong{font-size:var(--font-size-body);letter-spacing:-.01em}
+.prof__badge{
+  justify-self:start;font-family:var(--font-rounded);font-size:var(--font-size-label);letter-spacing:.08em;
+  padding:3px 8px;border-radius:99px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);
+}
+.prof__badge--pro{background:rgba(147,183,213,.2);color:#BBD6EE}
+.prof__meta{margin:14px 0 0;display:grid;grid-template-columns:auto 1fr;gap:5px 12px;font-size:var(--font-size-caption)}
+.prof__meta dt{color:rgba(255,255,255,.4);font-family:var(--font-rounded);letter-spacing:.06em;text-transform:uppercase;font-size:var(--font-size-caption);align-self:center}
+.prof__meta dd{margin:0;color:rgba(255,255,255,.82)}
+.prof__bio{margin-top:12px;font-size:var(--font-size-label);line-height:1.5;color:rgba(255,255,255,.62)}
+.prof__note{margin-top:12px;font-size:var(--font-size-caption);line-height:1.45;color:rgba(255,255,255,.35)}
+.mem .av{width:24px;height:24px}
+.msg .av{width:26px;height:26px;flex:none}
+.card__top video{
+  width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none;display:block;
+  background:rgba(255,255,255,.08);
+}
+/* the list is deliberately taller than the panel: it clips, the way a real
+   member list does, so the server reads as populated rather than as a
+   complete roster of six */
+.viz__members{overflow:hidden}
+
+@media(max-width:900px){
+  .viz{
+    grid-template-columns:52px 1fr;
+    grid-template-areas:"rail chan" "rail main";
+    grid-template-rows:auto 1fr;height:auto;min-height:420px;
+  }
+  .viz__rail{grid-area:rail}
+  .viz__chan{
+    grid-area:chan;border-right:0;border-bottom:1px solid rgba(255,255,255,.06);
+    padding:10px 12px;
+  }
+  .viz__chan h4{margin-bottom:8px}
+  .viz__chan>b,.viz__vc{display:none}
+  .viz__tabs{flex-direction:row;gap:6px;overflow-x:auto}
+  .viz__tabs button{width:auto;white-space:nowrap}
+  .viz__main{grid-area:main}
+  /* no column for the roster at this width; people are still reachable by
+     tapping any name in the conversation */
+  .viz__members{display:none}
+}
+@media(max-width:600px){
+  .viz{grid-template-columns:46px 1fr;min-height:360px}
+  .msg__name.pro::after{display:block;margin:4px 0 0;width:max-content}
+}
+
+/* ---- logo rows — one normalized marquee pattern, used by fixes 6, 7 and 9 --
+   Every logo is cropped to its own file, rendered at the same height with an
+   even margin, so spacing is consistent whatever each mark's aspect ratio is.
+   The track holds the set twice; translating it by exactly -50% puts the loop
+   point on an identical frame, so the seam is invisible. JS sets the duration
+   from the measured width so every row drifts at the same px/second. */
+.logorow{margin-top:clamp(34px,5vw,56px)}
+.marquee{
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);
+}
+.marquee__track{
+  display:flex;align-items:center;width:max-content;
+  animation:marquee var(--marquee-dur,40s) linear infinite;
+  will-change:transform;
+}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marquee:hover .marquee__track,
+.marquee:focus-within .marquee__track{animation-play-state:paused}
+.logo{
+  height:var(--logo-h);flex:none;margin-right:var(--logo-gap);
+  display:flex;align-items:center;
+}
+.logo img{
+  height:100%;width:auto;max-width:var(--logo-maxw);
+  object-fit:contain;display:block;
+}
+/* dark surface — the credibility marks are exported on black */
+.darkband{
+  background:var(--color-black);border-radius:10px;
+  padding:clamp(14px,2.2vw,22px) 0;
+}
+.credit-fallback{
+  font-size:var(--font-size-caption);line-height:1.7;color:rgba(255,255,255,.42);margin-top:16px;max-width:70ch;
+}
+.sec--white .credit-fallback{color:rgba(0,0,0,.45)}
+
+/* ===========================================================================
+   10. SPECIALIST DIRECTORY MOCKUP ======================================================================== */
+.dir{
+  border:1px solid rgba(255,255,255,.14);border-radius:12px;overflow:hidden;background:#0b0b0d;
+}
+.dir__bar{
+  padding:13px 18px;border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:10px;
+}
+.dir__bar em{
+  font-style:normal;font-size:var(--font-size-label);color:rgba(255,255,255,.45);
+  border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:6px 13px;flex:1;max-width:300px;
+}
+.dir__bar u{
+  text-decoration:none;font-family:var(--font-rounded);font-size:var(--font-size-caption);letter-spacing:.1em;
+  color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:6px 11px;
+}
+.dir__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:1px;background:rgba(255,255,255,.07)}
+.card{background:#0b0b0d;padding:clamp(18px,2.4vw,24px)}
+.card__top{display:flex;align-items:center;gap:12px}
+.card__top i{width:44px;height:44px;border-radius:50%;flex:none}
+.card h3{font-size:var(--font-size-body);letter-spacing:-.005em}
+.card__cred{
+  display:block;font-family:var(--font-rounded);font-size:var(--font-size-caption);letter-spacing:.08em;
+  color:#BBD6EE;margin-top:4px;
+}
+.card__cred::before{content:"✓ ";}
+.card p{font-size:var(--font-size-label);line-height:1.5;color:rgba(255,255,255,.55);margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chips s{
+  text-decoration:none;font-size:var(--font-size-caption);color:rgba(255,255,255,.6);
+  border:1px solid rgba(255,255,255,.14);border-radius:99px;padding:4px 9px;
+}
+.card__foot{
+  margin-top:16px;padding-top:13px;border-top:1px solid rgba(255,255,255,.08);
+  font-size:var(--font-size-caption);color:rgba(255,255,255,.45);display:flex;align-items:center;gap:7px;
+}
+.card__foot::before{content:"";width:7px;height:7px;border-radius:50%;background:#3BA55D;flex:none}
+
+/* ===========================================================================
+   specialist-sourcing pipeline
+   Three equal stages side by side on desktop, stacked on mobile. No new colours — the section background carries it.
+   ======================================================================== */
+.pipeline__intro{max-width:66ch}
+.pipeline{
+  list-style:none;margin:clamp(34px,5vw,56px) 0 0;padding:0;
+  display:grid;gap:clamp(22px,3vw,34px);
+  grid-template-columns:repeat(3,1fr);
+  align-items:start;
+}
+.stage{
+  border-top:1px solid rgba(255,255,255,.22);
+  padding-top:clamp(16px,2vw,22px);
+  min-width:0;          /* grid items default to a max-content minimum, and the
+                           marquee inside stage 01 would otherwise blow the
+                           column out to its full track width */
+}
+.stage__num{
+  display:block;font-family:var(--font-rounded);font-size:var(--font-size-label);
+  letter-spacing:.18em;color:rgba(255,255,255,.45);margin-bottom:10px;
+}
+.stage__word{
+  font-weight:700;font-size:var(--font-size-body);
+  letter-spacing:-.02em;line-height:1.1;
+}
+.stage__body{
+  margin-top:10px;font-size:var(--font-size-body);line-height:1.55;
+  color:rgba(255,255,255,.82);max-width:42ch;
+}
+/* the same stage component carries the 5-step escalation path and the
+   4-part "about this project" row */
+.pipeline--5{grid-template-columns:repeat(5,1fr)}
+.pipeline--4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1100px){.pipeline--5,.pipeline--4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:900px){
+  .pipeline{grid-template-columns:1fr}
+  .stage__body{max-width:none}
+}
+
+/* ===========================================================================
+   11. CARE ICON SEQUENCE (infinity morphing into a heart)
+   ======================================================================== */
+/* one looping mark that morphs loose loop → tight loop → open shape
+   → heart, holds, then restarts. The four paths are generated with identical
+   command structure (M + 8 C + Z) so SMIL can interpolate them cleanly. The
+   tick underneath is driven by a CSS keyframe on the same clock and curve. */
+/* no background of its own, and it now sits in the shared corner slot */
+.care{
+  padding:0;display:grid;grid-template-rows:1fr auto;gap:9px;
+  height:100%;aspect-ratio:100/74;
+}
+.care svg{height:100%;width:100%}
+.care svg{width:100%;height:auto;display:block;overflow:visible}
+.care svg path{
+  fill:none;stroke:var(--color-white);stroke-width:4;
+  stroke-linecap:round;stroke-linejoin:round;
+  vector-effect:non-scaling-stroke;   /* keeps the shared 2px-family weight */
+}
+.care__tick{height:4px;border-radius:99px;background:rgba(255,255,255,.28);overflow:hidden}
+.care__tick s{
+  display:block;height:100%;width:100%;border-radius:99px;background:var(--color-white);
+  transform-origin:left center;transform:scaleX(.28);
+  animation:careTick var(--duration-morph) var(--ease-standard) infinite;
+}
+@keyframes careTick{
+  0%{transform:scaleX(.28)}22%{transform:scaleX(.52)}44%{transform:scaleX(.76)}
+  66%{transform:scaleX(1)}85%{transform:scaleX(1)}100%{transform:scaleX(.28)}
+}
+
+/* ===========================================================================
+   13. DR. K / INSPIRATION + VIDEO EMBED
+   ======================================================================== */
+.note{
+  margin-top:clamp(28px,4vw,40px);padding:16px 18px;
+  border-left:2px solid rgba(255,255,255,.22);
+  font-size:var(--font-size-caption);line-height:1.6;color:rgba(255,255,255,.55);max-width:66ch;
+}
+.video-embed{
+  position:relative;padding-top:56.25%;margin-top:clamp(28px,4vw,44px);
+  border-radius:12px;overflow:hidden;background:#0b0b0d;border:1px solid rgba(255,255,255,.12);
+}
+.video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-facade{
+  position:absolute;inset:0;width:100%;height:100%;padding:0;border:0;cursor:pointer;
+  background:#0b0b0d;color:var(--color-white);display:grid;place-items:center;
+}
+.yt-facade img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.45;
+  transition:opacity var(--duration-drawer) var(--ease-standard)}
+.yt-facade:hover img,.yt-facade:focus-visible img{opacity:.6}
+.yt-facade__play{
+  position:relative;width:72px;height:72px;border-radius:50%;background:var(--color-red-deep);
+}
+.yt-facade__play::after{
+  content:"";position:absolute;left:29px;top:22px;
+  border-left:22px solid var(--color-white);border-top:14px solid transparent;border-bottom:14px solid transparent;
+}
+.yt-facade__label{
+  position:absolute;left:0;right:0;bottom:clamp(16px,3vw,28px);text-align:center;
+  font-weight:700;font-size:var(--font-size-body);padding:0 16px;
+}
+.yt-facade__label small{display:block;font-weight:400;font-size:var(--font-size-caption);opacity:.8;margin-top:4px}
+.video-link{
+  display:inline-block;margin-top:18px;font-size:var(--font-size-label);font-weight:700;
+  color:rgba(255,255,255,.8);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.3);
+  padding-bottom:2px;
+}
+.video-link:hover{color:#fff;border-color:#fff}
+
+/* ===========================================================================
+   14. GRADIENT "BREATH" BAND + TYPEWRITER ======================================================================== */
+
+/* ===========================================================================
+   15. FAQ ======================================================================== */
+#faq{position:relative}
+/* the mark is a hand-authored brush stroke, not Helvetica's "?"
+   glyph: a tilted, thick-to-thin tapering hook with a detached dot. */
+/* shares the .icon-mark slot; only the reveal is its own */
+.qmark{
+  opacity:0;transform:translateY(18px) scale(.94);
+  transition:opacity var(--duration-reveal) var(--ease-standard),
+             transform var(--duration-reveal) var(--ease-standard);
+}
+#faq.in .qmark{opacity:1;transform:none}
+/* the same slow idle breath the orb has, so the FAQ mark is
+   not the one static icon in the family */
+#faq.in .qmark svg{animation:qmarkBreathe var(--duration-breathe) var(--ease-standard) infinite;transform-origin:70% 60%}
+@keyframes qmarkBreathe{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.035) rotate(-1.2deg)}}
+.qmark{height:100%}
+.qmark svg{height:100%;width:auto;display:block}
+.qmark path,.qmark circle{fill:var(--color-white);stroke:var(--color-white)}
+.faq{margin-top:clamp(34px,5vw,54px);position:relative;z-index:1;max-width:760px}
+.faq__item{border-top:1px solid rgba(255,255,255,.4)}
+.faq__item:last-child{border-bottom:1px solid rgba(255,255,255,.4)}
+.faq__q{
+  width:100%;background:none;border:0;padding:clamp(18px,2.4vw,26px) 40px clamp(18px,2.4vw,26px) 0;
+  font-family:var(--font);font-weight:700;font-size:var(--font-size-body);
+  letter-spacing:-.015em;line-height:1.25;color:#fff;text-align:left;cursor:pointer;
+  position:relative;display:block;
+}
+.faq__q::after{
+  content:"";position:absolute;right:6px;top:50%;width:15px;height:2px;
+  background:#fff;transform:translateY(-50%);
+}
+.faq__q::before{
+  content:"";position:absolute;right:12.5px;top:50%;width:2px;height:15px;
+  background:#fff;transform:translateY(-50%) scaleY(1);
+  transition:transform var(--duration-drawer) var(--ease-standard);
+}
+.faq__q[aria-expanded="true"]::before{transform:translateY(-50%) scaleY(0)}
+.faq__a{display:grid;grid-template-rows:0fr;transition:grid-template-rows var(--duration-drawer) var(--ease-standard)}
+.faq__item.open .faq__a,html:not(.js) .faq__a{grid-template-rows:1fr}
+.faq__a>div{overflow:hidden}
+.faq__a p{
+  font-size:var(--font-size-body);line-height:1.6;
+  color:rgba(255,255,255,.92);padding-bottom:clamp(22px,3vw,30px);max-width:62ch;
+}
+.faq__a p+p{padding-top:14px;margin-top:-8px}
+.safety{
+  margin-top:clamp(40px,6vw,64px);padding-top:clamp(24px,3vw,32px);
+  border-top:1px solid rgba(255,255,255,.4);
+  font-size:var(--font-size-body);line-height:1.65;
+  color:rgba(255,255,255,.95);max-width:66ch;position:relative;z-index:1;
+}
+.safety b{font-weight:700}
+
+/* ===========================================================================
+   16. FOOTER — RESEARCH & SOURCES
+   ======================================================================== */
+#sources{padding-top:clamp(40px,5vw,64px);padding-bottom:clamp(32px,4vw,52px)}
+
+/* collapsed by default. grid-template-rows 0fr→1fr animates the
+   height; visibility:hidden while closed keeps the links out of the tab order. */
+.drawer__toggle{
+  width:100%;background:none;border:0;cursor:pointer;padding:4px 0;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  font-family:var(--font);font-weight:700;letter-spacing:-.015em;text-align:left;
+  font-size:var(--font-size-body);color:var(--color-black);
+}
+.drawer__toggle{min-height:44px}
+.drawer__toggle svg{
+  width:clamp(18px,2.2vw,24px);height:auto;flex:none;
+  transition:transform var(--duration-drawer) var(--ease-standard);
+}
+.drawer.open .drawer__toggle{min-height:44px}
+.drawer__toggle svg{transform:rotate(180deg)}
+.drawer__body{
+  display:grid;grid-template-rows:0fr;
+  transition:grid-template-rows var(--duration-drawer) var(--ease-standard);
+}
+.drawer.open .drawer__body,html:not(.js) .drawer__body{grid-template-rows:1fr}
+.drawer__body>div{
+  overflow:hidden;visibility:hidden;
+  transition:visibility 0s linear var(--duration-drawer);
+}
+.drawer.open .drawer__body>div,html:not(.js) .drawer__body>div{visibility:visible;transition-delay:0s}
+.drawer__inner{padding-top:clamp(24px,3vw,36px)}
+.srcbar{margin:0 0 clamp(30px,4vw,46px)}
+
+/* a row of real videos beside the player */
+.vids{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+  gap:clamp(11px,1.5vw,18px);margin-top:clamp(18px,2.4vw,26px);
+}
+.vid{
+  display:block;text-decoration:none;border-radius:10px;overflow:hidden;
+  background:#0b0b0d;border:1px solid rgba(255,255,255,.12);
+  transition:border-color var(--duration-drawer) var(--ease-standard),
+             transform var(--duration-drawer) var(--ease-standard);
+}
+.vid:hover,.vid:focus-visible{border-color:rgba(255,255,255,.4);transform:translateY(-2px)}
+.vid img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:rgba(255,255,255,.06)}
+.vid span{
+  display:block;padding:11px 13px 14px;font-size:var(--font-size-label);line-height:1.4;
+  font-weight:700;color:rgba(255,255,255,.88);
+}
+
+/* closing bookend, same deep red as the hero */
+#closing{background:var(--color-red-deep)}
+#closing .hero-h1{font-size:var(--font-size-display)}
+.closing-grid{display:flex;align-items:center;gap:clamp(28px,5vw,64px);flex-wrap:wrap-reverse}
+.closing-copy{flex:1 1 440px;min-width:0}
+.closing-cta{
+  margin-top:clamp(28px,4vw,42px);display:flex;gap:clamp(12px,2vw,20px);
+  flex-wrap:wrap;align-items:center;
+}
+.closing-cta a{
+  font-weight:700;font-size:var(--font-size-label);text-decoration:none;
+  color:var(--color-red-deep);background:var(--color-white);
+  padding:14px clamp(20px,2.6vw,30px);border-radius:99px;flex:none;
+  transition:transform var(--duration-drawer) var(--ease-standard);
+}
+.closing-cta a:hover{transform:translateY(-2px)}
+.closing-cta em{font-style:normal;font-size:var(--font-size-caption);line-height:1.5;color:rgba(255,255,255,.8);flex:1 1 260px}
+.srclist{list-style:none;margin:0;padding:0;display:grid;gap:14px;counter-reset:s}
+.srclist li{
+  display:grid;grid-template-columns:24px 1fr;gap:10px;
+  font-size:var(--font-size-caption);line-height:1.55;color:rgba(0,0,0,.66);
+  padding-bottom:14px;border-bottom:1px solid rgba(0,0,0,.1);
+}
+.srclist li b{font-weight:700;color:rgba(0,0,0,.4);font-variant-numeric:tabular-nums}
+.srclist a{font-weight:700;color:var(--color-red-deep);text-decoration:none;border-bottom:1px solid rgba(202,0,42,.35)}
+.srclist a:hover{border-color:var(--color-red-deep)}
+/* the source links sit at the line-height of the body text
+   (16px). Inline links inside a sentence are exempt from SC 2.5.8, but the
+   standalone ones are not, so all of them get a 24px-tall hit area that does
+   not disturb the line box. */
+.srclist a,.a11y-stmt a{position:relative}
+.srclist a::after,.a11y-stmt a::after{
+  content:"";position:absolute;left:0;right:0;top:50%;
+  transform:translateY(-50%);height:24px;
+}
+.srclist em{font-style:normal;display:block;color:rgba(0,0,0,.55);margin-top:3px}
+/* accessibility statement, same drawer treatment as sources */
+#a11yDrawer{
+  margin-top:clamp(26px,3.5vw,40px);
+  border-top:1px solid rgba(0,0,0,.12);
+  padding-top:clamp(20px,3vw,30px);
+}
+.a11y-stmt{font-size:var(--font-size-body);line-height:1.65;color:rgba(0,0,0,.72);max-width:66ch}
+.a11y-stmt + .a11y-stmt{margin-top:14px}
+.a11y-stmt strong{font-weight:700;color:var(--color-black)}
+.a11y-stmt a{
+  font-weight:700;color:var(--color-red-deep);text-decoration:none;
+  border-bottom:1px solid rgba(202,0,42,.4);
+}
+.a11y-stmt a:hover{border-color:var(--color-red-deep)}
+.a11y-stmt--date{margin-top:18px;color:rgba(0,0,0,.6)}
+.colophon{
+  margin-top:clamp(40px,5vw,60px);padding-top:24px;border-top:1px solid rgba(0,0,0,.12);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  font-size:var(--font-size-caption);color:rgba(0,0,0,.45);
+}
+.colophon b{font-weight:700;color:rgba(0,0,0,.8);font-size:var(--font-size-label)}
+
+
+/* ===========================================================================
+   accessibility widget
+   Fixed top-left for the whole session (this is one continuous scroll page).
+   (ikona_dostepnosci.svg) — the standard universal-access figure, chosen for
+   recognisability over the site's stylised icon language.
+   ======================================================================== */
+.a11y{position:fixed;top:clamp(12px,2vw,20px);left:clamp(12px,2vw,20px);z-index:150}
+/* the icon is a complete badge — black ring, white disc, black figure — so it
+   carries its own surface and edge; the button adds nothing around it */
+.a11y__btn{
+  width:44px;height:44px;border-radius:50%;cursor:pointer;
+  padding:0;border:0;background:none;display:block;
+  transition:transform var(--duration-drawer) var(--ease-standard);
+}
+.a11y__btn:hover{transform:scale(1.06)}
+.a11y__btn svg{width:100%;height:100%;display:block}
+
+.a11y__panel{
+  position:absolute;top:52px;left:0;width:252px;
+  background:#15151a;color:var(--color-white);
+  border:1px solid rgba(255,255,255,.2);border-radius:12px;
+  padding:14px;box-shadow:0 18px 50px rgba(0,0,0,.6);
+  opacity:0;transform:translateY(-6px);pointer-events:none;
+  transition:opacity var(--duration-drawer) var(--ease-standard),
+             transform var(--duration-drawer) var(--ease-standard);
+}
+.a11y.open .a11y__panel{opacity:1;transform:none;pointer-events:auto}
+.a11y__panel h2{
+  font-size:var(--font-size-label);letter-spacing:.02em;margin-bottom:12px;
+  color:rgba(255,255,255,.72);font-weight:700;
+}
+.a11y__row{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:9px 0;border-top:1px solid rgba(255,255,255,.14);
+}
+.a11y__row:first-of-type{border-top:0}
+.a11y__row > span{font-size:var(--font-size-label);color:rgba(255,255,255,.9)}
+.a11y__switch{
+  position:relative;width:44px;height:26px;flex:none;cursor:pointer;
+  border:0;border-radius:99px;background:rgba(255,255,255,.22);
+  transition:background var(--duration-drawer) var(--ease-standard);
+}
+.a11y__switch::before{content:""}
+.a11y__switch::after{
+  content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;
+  border-radius:50%;background:var(--color-white);
+  transition:transform var(--duration-drawer) var(--ease-standard);
+}
+.a11y__switch[aria-checked="true"]{background:var(--color-red-deep)}
+.a11y__switch[aria-checked="true"]::after{transform:translateX(18px)}
+.a11y__steps{display:flex;gap:4px}
+.a11y__steps button{
+  min-width:34px;height:30px;cursor:pointer;
+  background:rgba(255,255,255,.1);border:1px solid transparent;border-radius:7px;
+  color:rgba(255,255,255,.85);font-family:var(--font);font-size:var(--font-size-label);font-weight:700;
+}
+.a11y__steps button[aria-pressed="true"]{
+  background:var(--color-white);color:var(--color-black);
+}
+
+/* --- text size: scales the rem base the whole type scale is built on --- */
+html.a11y-text-sm{font-size:87.5%}
+html.a11y-text-lg{font-size:118.75%}
+
+/* --- high contrast: pushes every remaining translucent string to solid --- */
+html.a11y-contrast .lede,html.a11y-contrast .micro,html.a11y-contrast .cap,
+html.a11y-contrast .credit-fallback,html.a11y-contrast .note,
+html.a11y-contrast .stat span,html.a11y-contrast .tag,
+html.a11y-contrast .msg p,html.a11y-contrast .who,html.a11y-contrast .rx,
+html.a11y-contrast .card p,html.a11y-contrast .chips s,
+html.a11y-contrast .card__foot,html.a11y-contrast .stage__body,
+html.a11y-contrast .stage__num,html.a11y-contrast .viz__chan b,
+html.a11y-contrast .viz__members b,html.a11y-contrast .viz__vc,
+html.a11y-contrast .viz__bar em,html.a11y-contrast .prof__bio,
+html.a11y-contrast .prof__note,html.a11y-contrast .prof__meta dt,
+html.a11y-contrast .viz__tabs button{color:var(--color-white)}
+html.a11y-contrast .sec--white .srclist li,
+html.a11y-contrast .sec--white .srclist em,
+html.a11y-contrast .sec--white .colophon,
+html.a11y-contrast .sec--blue .faq__a p,
+html.a11y-contrast .sec--blue .safety{color:var(--color-black)}
+/* high contrast keeps white text on red but moves the
+   mid-deck red to the bookend red, where white clears AA at every size
+   (5.93:1 vs 4.24:1) */
+html.a11y-contrast .sec--red{background:var(--color-red-deep)}
+html.a11y-contrast .band--gradient::before{opacity:0}
+html.a11y-contrast .proof p{background:rgba(0,0,0,.78)}
+html.a11y-contrast .faq__item{border-top-color:rgba(0,0,0,.7)}
+html.a11y-contrast .stage{border-top-color:rgba(255,255,255,.6)}
+html.a11y-contrast :focus-visible{outline-width:3px}
+
+/* ===========================================================================
+   touch targets, status without colour, skip link
+   ======================================================================== */
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;
+}
+.viz__rail button,.viz__tabs button,.who,.msg__name,.prof__close,
+.a11y__switch,.a11y__steps button,.drawer__toggle,.skip{position:relative}
+.viz__rail button::after,.viz__tabs button::after,.who::after,
+.msg__name::before,.prof__close::after,.a11y__switch::before,
+.a11y__steps button::after,.drawer__toggle::after,.skip::after{
+  content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:max(100%,44px);height:max(100%,44px);
+}
+.viz__tabs button{min-height:34px}
+.mem{min-height:34px}
+
+/* presence must not be colour-only (WCAG 1.4.1) — each state gets a shape */
+.mem u{
+  border:2px solid #0e0e11;background:transparent;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.55);
+}
+.mem.online u{background:#3BA55D;box-shadow:none}            /* solid disc */
+.mem.idle u{
+  background:transparent;box-shadow:inset 0 0 0 2px #FAA61A;  /* hollow ring */
+}
+.mem:not(.online):not(.idle) u{
+  background:transparent;box-shadow:inset 0 0 0 2px rgba(255,255,255,.45);
+  clip-path:polygon(0 38%,100% 38%,100% 62%,0 62%);            /* dash */
+}
+
+/* skip link — always present, first thing in the tab order */
+.skip{
+  position:fixed;top:8px;left:8px;z-index:200;
+  background:var(--color-white);color:var(--color-black);
+  font-weight:700;font-size:var(--font-size-label);padding:12px 18px;border-radius:8px;min-height:44px;
+  display:inline-flex;align-items:center;
+  transform:translateY(-200%);
+  transition:transform var(--duration-drawer) var(--ease-standard);
+}
+.skip:focus{transform:none}
+
+/* ===========================================================================
+   CONTRAST, measured not assumed
+   White tops out at 4.24:1 on --color-red #EE243B, so it can only carry the
+   large bold headlines (4.24 >= 3.0). Every smaller or regular-weight string
+   on that red is switched to black, which measures 4.95:1 and clears AA at
+   any size. Headlines stay white. --color-red-deep #CA002A is 5.93:1 with
+   white and needs no change.
+   ======================================================================== */
+
+.sec--red .tag,
+.sec--red .lede,
+.sec--red .micro,
+.sec--red .micro strong,
+.sec--red .micro em,
+.sec--red .cap,
+.sec--red .credit-fallback,
+.sec--red .stat span,
+.sec--red .fn{color:var(--color-white)}
+.sec--red:not(#hero) .lede,
+.sec--red:not(#hero) .micro,
+.sec--red:not(#hero) .stat span{font-weight:700}
+/* the logo bands inside red sections sit on their own dark/light surfaces */
+.sec--red .darkband .cap,
+.sec--red .darkband .credit-fallback{color:rgba(255,255,255,.72)}
+#hero .fn{color:var(--color-white)}
+
+/* #CA002A carries white at every size — the eyebrow was at 50% opacity */
+#closing .tag,#hero .tag{color:var(--color-white)}
+
+/* dim greys inside the dark chat panel, all were under 4.5:1 */
+.viz__chan b,.viz__members b{color:rgba(255,255,255,.62)}
+.viz__vc{color:rgba(255,255,255,.62)}
+.viz__add{color:rgba(255,255,255,.62)}
+.viz__bar em{color:rgba(255,255,255,.62)}
+.who{color:rgba(255,255,255,.72)}
+.viz__rail button{color:rgba(255,255,255,.85)}
+/* the active rail square was white on #EE243B (4.24) — the deeper red is 5.93 */
+.viz__rail button.on{background:var(--color-red-deep)}
+.viz__tabs button{color:rgba(255,255,255,.66)}
+.msg p{color:rgba(255,255,255,.8)}
+.rx{color:rgba(255,255,255,.78)}
+.card p{color:rgba(255,255,255,.7)}
+.chips s{color:rgba(255,255,255,.72)}
+.card__foot{color:rgba(255,255,255,.62)}
+.dir__bar em,.dir__bar u{color:rgba(255,255,255,.6)}
+.prof__meta dt{color:rgba(255,255,255,.6)}
+.prof__bio{color:rgba(255,255,255,.75)}
+.prof__note{color:rgba(255,255,255,.55)}
+.prof__badge{color:rgba(255,255,255,.82)}
+.stage__num{color:rgba(255,255,255,.62)}
+.note{color:rgba(255,255,255,.66)}
+.credit-fallback{color:rgba(255,255,255,.66)}
+.cap{color:rgba(255,255,255,.62)}
+.colophon{color:rgba(0,0,0,.66)}
+.srclist li{color:rgba(0,0,0,.7)}
+.srclist li b{color:rgba(0,0,0,.55)}
+.srclist em{color:rgba(0,0,0,.66)}
+
+/* the .lede is 88% white, which is fine on black but only 3.54:1 on the
+   deep red of the two bookends */
+#hero .lede,#closing .lede{color:var(--color-white)}
+
+/* the social-proof quote sits on a drifting gradient whose peach end is far
+   too light for white, so it gets its own dark plate — measured 5.0:1 against
+   the lightest stop the drift can put underneath it */
+.proof p{
+  background:rgba(0,0,0,.55);
+  padding:5px 13px;border-radius:99px;flex:0 1 auto;
+}
+
+/* ===========================================================================
+   17. ACCESSIBILITY PASS — measured contrast (WCAG 2.1)
+   ---------------------------------------------------------------------------
+   White on --color-blue #93B7D5 is 2.11:1 — it fails even the 3:1 large-text
+   threshold, so every piece of TEXT in the FAQ section is black instead
+   (black on #93B7D5 = 9.97:1). The blue stays exactly as specified; only the
+   ink changed. The decorative "?" watermark stays white — it carries no
+   information and is aria-hidden.
+
+   White on --color-red #EE243B is 4.24:1. That clears AA for large bold
+   display type (3:1), which is what the red sections use for headlines, but
+   it sits just under the 4.5:1 AA threshold for body-size text — and 4.24 is
+   the ceiling on this background, so all text on red is set to full white
+   below rather than tinted down.
+   If AA at body size is a hard requirement, the one-line palette-compliant
+   fix is to swap the red sections to --color-red-deep #CA002A (white = 5.92:1):
+       .sec--red{background:var(--color-red-deep)}
+   ======================================================================== */
+.sec--blue{color:var(--color-black)}
+.sec--blue .tag{color:rgba(0,0,0,.6)}
+.faq__item{border-top-color:rgba(0,0,0,.32)}
+.faq__item:last-child{border-bottom-color:rgba(0,0,0,.32)}
+.faq__q{color:var(--color-black)}
+.faq__q::before,.faq__q::after{background:var(--color-black)}
+.faq__a p{color:rgba(0,0,0,.84)}
+.safety{border-top-color:rgba(0,0,0,.32);color:rgba(0,0,0,.9)}
+.qmark path,.qmark circle{fill:rgba(255,255,255,.62);stroke:rgba(255,255,255,.62)}
+
+.cap{color:rgba(255,255,255,.58)}
+.credit-fallback{color:rgba(255,255,255,.62)}
+.colophon{color:rgba(0,0,0,.6)}
+
+/* ===========================================================================
+   18. SCROLL REVEAL + REDUCED MOTION
+   ======================================================================== */
+/* Reveal the CONTENT, never the section itself — a section's background must
+   paint even if the observer never fires. */
+.js .rv>.wrap{opacity:0;transform:translateY(22px);transition:opacity var(--duration-reveal) var(--ease-standard),transform var(--duration-reveal) var(--ease-standard)}
+.js .rv.in>.wrap{opacity:1;transform:none}
+
+/* uniform reduced-motion handling, audited element by
+   element against what actually ships. Every looping or auto-playing
+   animation freezes on a resting frame. The same declarations are mirrored
+   onto html.a11y-reduce so the on-page widget can force this regardless of
+   the visitor's OS setting. */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;
+  }
+  .rv>.wrap{opacity:1;transform:none}
+  .qmark{opacity:1;transform:none}
+  #faq.in .qmark svg{animation:none}
+  .orb__ring,.orb__glow,.orb__spark{animation:none}
+  .hero-h1 .ch{opacity:1}
+  .hero-h1 .d1{opacity:.66}
+  .hero-h1 .d2{opacity:.3}
+  .hero-h1 .her::before{animation:none;opacity:.6}
+  .proof-line span{animation:none;transform:scaleX(.72)}
+  .care__tick s{animation:none;transform:scaleX(1)}
+  .marquee{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
+  .marquee__track{animation:none}
+  .logo--dup{display:none}
+  .band--gradient{animation:none;background-position:0% 50%}
+  .band--gradient::before{animation:none;opacity:.35}
+  .sos{animation:none;opacity:1}
+  .ribbon__lead{animation:none;stroke-dasharray:none;opacity:.9}
+  .viz__typing b s{animation:none}
+  .viz__bar em::before{animation:none;opacity:1}
+}
+html.a11y-reduce{
+  scroll-behavior:auto;
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;
+  }
+  .rv>.wrap{opacity:1;transform:none}
+  .qmark{opacity:1;transform:none}
+  #faq.in .qmark svg{animation:none}
+  .orb__ring,.orb__glow,.orb__spark{animation:none}
+  .hero-h1 .ch{opacity:1}
+  .hero-h1 .d1{opacity:.66}
+  .hero-h1 .d2{opacity:.3}
+  .hero-h1 .her::before{animation:none;opacity:.6}
+  .proof-line span{animation:none;transform:scaleX(.72)}
+  .care__tick s{animation:none;transform:scaleX(1)}
+  .marquee{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
+  .marquee__track{animation:none}
+  .logo--dup{display:none}
+  .band--gradient{animation:none;background-position:0% 50%}
+  .band--gradient::before{animation:none;opacity:.35}
+  .sos{animation:none;opacity:1}
+  .ribbon__lead{animation:none;stroke-dasharray:none;opacity:.9}
+  .viz__typing b s{animation:none}
+  .viz__bar em::before{animation:none;opacity:1}
+}

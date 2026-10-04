@@ -1,0 +1,8 @@
+# licensed stock media — local build only (see README → Assets and licences)
+assets/avatars/
+assets/video/
+# licensed font files — never redistributed
+fonts/
+# local tooling
+.claude/
+.DS_Store
