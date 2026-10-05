@@ -16,8 +16,9 @@ real care.
 
 1. **Need.** More than a billion people live with a mental-health condition, and even in
    higher-income countries only about half get care (WHO, 2025).
-2. **Reach.** About 40% of the world plays games online. Many of the people who need
-   support already spend their evenings there.
+2. **Reach.** About 40% of the world plays games online, and in Europe more than half of
+   people aged 6–64 play video games. Many of the people who need support already spend
+   their evenings there.
 3. **Insight.** Hours played don't predict harm. *Why* people play does: feeling you
    have to play goes with worse wellbeing, wanting to play doesn't (Oxford, 2022).
    Heavy play is often a way of coping with something else.
@@ -25,7 +26,15 @@ real care.
    in the game: they notice, check in and refer, with support that steps up only
    when it's needed.
 
-Every number on the page links to its source in the **Research & sources** drawer.
+The page also covers:
+- the existing landscape (Healthy Gamer, Take This, Safe In Our World, Discord ×
+  Crisis Text Line) and the gap between them;
+- a 12-week pilot with four success measures and a stop rule;
+- the hard questions, answered in the FAQ: dual relationships, minors, licences across
+  borders, health data under the GDPR, and who pays.
+
+The launch market is Poland and the EU. Every number on the page links to one of 23
+sources in the **Research & sources** drawer, and US-only figures are labelled as such.
 
 | What it looks like inside | Stepped support |
 |---|---|
