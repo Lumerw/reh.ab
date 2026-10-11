@@ -563,11 +563,7 @@ html:not(.js) #loader{display:none}
 .msg strong{display:block;font-size:var(--font-size-label);margin-bottom:2px;font-weight:700}
 .msg p{font-size:var(--font-size-label);line-height:1.45}
 .msg .pro{color:#A9CBEA}
-.msg .pro::after{
-  content:"VERIFIED SPECIALIST";font-family:var(--font-rounded);font-size:var(--font-size-label);
-  letter-spacing:.09em;background:rgba(147,183,213,.2);color:#BBD6EE;
-  padding:2px 5px;border-radius:99px;margin-left:7px;vertical-align:1px;
-}
+
 .viz__typing{
   padding:0 16px 13px;font-size:var(--font-size-caption);color:rgba(255,255,255,.62);
   opacity:0;transition:opacity .4s;
@@ -620,12 +616,7 @@ html:not(.js) #loader{display:none}
 }
 .msg__name:hover{opacity:.72;text-decoration:underline}
 .msg__name.pro{color:#A9CBEA}
-.msg__name.pro::after{
-  content:"VERIFIED SPECIALIST";font-family:var(--font-rounded);font-size:var(--font-size-label);
-  letter-spacing:.09em;background:rgba(147,183,213,.2);color:#BBD6EE;
-  padding:2px 5px;border-radius:99px;margin-left:7px;vertical-align:1px;
-  display:inline-block;white-space:nowrap;
-}
+
 
 /* the profile popup */
 .prof{
@@ -688,7 +679,7 @@ html:not(.js) #loader{display:none}
 }
 @media(max-width:600px){
   .viz{grid-template-columns:46px 1fr;min-height:360px}
-  .msg__name.pro::after{display:block;margin:4px 0 0;width:max-content}
+  
 }
 
 /* ---- logo rows — one normalized marquee pattern, used by fixes 6, 7 and 9 --
@@ -1331,3 +1322,58 @@ html.a11y-reduce .sos{animation:none;opacity:1}
 html.a11y-reduce .ribbon__lead{animation:none;stroke-dasharray:none;opacity:.9}
 html.a11y-reduce .viz__typing b s{animation:none}
 html.a11y-reduce .viz__bar em::before{animation:none;opacity:1}
+
+/* ===========================================================================
+   Panel features: guardian channel, the quiet flag, verified-badge tooltip
+   ======================================================================== */
+.viz__shield{width:10px;height:12px;fill:currentColor;flex:none;display:inline-block;vertical-align:-1px;margin-right:6px}
+/* guardian channel: same list, a softer blue highlight and a shield, so the
+   regular-vs-guardian distinction is visible inside the mockup itself */
+.viz__tabs button[data-guardian]{color:#BBD6EE;background:rgba(147,183,213,.08)}
+.viz__tabs button[data-guardian]:hover{background:rgba(147,183,213,.14);color:#fff}
+.viz__tabs button[data-guardian].on{background:rgba(147,183,213,.22);color:#fff}
+.viz__guard{
+  display:inline-flex;align-items:center;font-weight:400;font-size:var(--font-size-caption);
+  color:#BBD6EE;background:rgba(147,183,213,.16);border-radius:99px;padding:3px 9px;white-space:nowrap;
+}
+.viz__guard[hidden]{display:none}
+.viz__guard .viz__shield{margin-right:5px}
+.viz__flag{
+  flex:none;cursor:pointer;font-family:var(--font);font-size:var(--font-size-caption);font-weight:700;
+  color:rgba(255,255,255,.9);background:none;border:1px solid rgba(255,255,255,.32);
+  border-radius:99px;padding:4px 11px;min-height:28px;white-space:nowrap;
+  transition:background var(--duration-drawer) var(--ease-standard),border-color var(--duration-drawer) var(--ease-standard);
+}
+.viz__flag:hover{background:rgba(255,255,255,.08)}
+.viz__flag[aria-pressed="true"]{background:rgba(147,183,213,.2);border-color:transparent;color:#BBD6EE;cursor:default}
+/* private lines: dashed, tinted, locked — visibly not part of the public feed */
+.msg--private{
+  border:1px dashed rgba(147,183,213,.5);border-radius:8px;padding:9px 11px;
+  background:rgba(147,183,213,.07);align-items:flex-start;
+}
+.msg__lock{flex:none;width:34px;display:grid;place-items:center;padding-top:2px}
+.msg__lock svg{width:12px;height:14px;fill:#BBD6EE}
+.msg__only{font-size:var(--font-size-caption)!important;color:#BBD6EE;letter-spacing:.04em;margin-bottom:2px}
+.msg__head{display:flex;align-items:center;flex-wrap:wrap;gap:4px 7px;margin-bottom:2px}
+.msg__head .msg__name{margin:0}
+.vbadge,.badge{border:0;cursor:help;font-family:var(--font-rounded);text-transform:uppercase}
+.vbadge{
+  font-size:var(--font-size-label);letter-spacing:.09em;background:rgba(147,183,213,.2);color:#BBD6EE;
+  padding:2px 6px;border-radius:99px;white-space:nowrap;
+}
+.vbadge:hover,.badge:hover{background:rgba(147,183,213,.32)}
+.vtip{
+  position:absolute;z-index:30;max-width:280px;
+  background:#16161b;color:rgba(255,255,255,.9);border:1px solid rgba(147,183,213,.45);border-radius:8px;
+  padding:10px 12px;font-size:var(--font-size-caption);line-height:1.5;box-shadow:0 10px 28px rgba(0,0,0,.55);
+}
+.vtip b{color:#fff}
+.vtip[hidden]{display:none}
+.mem.pulse{background:rgba(147,183,213,.12)}
+.mem.pulse .badge{background:rgba(147,183,213,.42);box-shadow:0 0 0 4px rgba(147,183,213,.18)}
+html.a11y-contrast .viz__guard,html.a11y-contrast .msg__only,html.a11y-contrast .vbadge,
+html.a11y-contrast .viz__tabs button[data-guardian]{color:var(--color-white)}
+/* the bar now carries a pill and a button as well as the status, so it may
+   wrap to a second line rather than overflow */
+.viz__bar{flex-wrap:wrap;row-gap:6px}
+@media(max-width:600px){.viz__bar em{display:none}}

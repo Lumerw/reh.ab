@@ -171,7 +171,7 @@
           m("nadia.exe","mixed how? spoiler-free please","😅 2"),
           m("lena_","mostly pacing. still buying it day one")
         ]},
-        {id:"checkin", label:"#check-in", status:"open · no pressure", typing:"Dr. Adeyemi", msgs:[
+        {id:"checkin", label:"#check-in", guardian:true, status:"open · no pressure", typing:"Dr. Adeyemi", msgs:[
           m("Dr. Nowak","reminder that #quiet-room is always open, mic optional",null,1),
           m("sam_w","appreciate that",null,1),
           m("Dr. Adeyemi","how did the sleep thing go this week?",null,1),
@@ -189,7 +189,7 @@
       members:{ specialists:["Dr. Nowak"],
                 players:["yusuf","marta","sam_w","dex","kai_","bruno","lena_"], count:14 },
       channels:[
-        {id:"night", label:"#night-shift", status:"6 online · 02:40", typing:"dex", msgs:[
+        {id:"night", label:"#night-shift", guardian:true, status:"6 online · 02:40", typing:"dex", msgs:[
           m("yusuf","anyone still up",null,1),
           m("marta","always",null,1),
           m("sam_w","3am club checking in","🌙 3",1),
@@ -213,7 +213,7 @@
       members:{ specialists:["J. Lindqvist","Dr. Adeyemi"],
                 players:["ava.mp4","krzys","marta","sam_w","Tomek","nadia.exe"], count:11 },
       channels:[
-        {id:"nomic", label:"#no-mic", status:"text only", typing:"marta", msgs:[
+        {id:"nomic", label:"#no-mic", guardian:true, status:"text only", typing:"marta", msgs:[
           m("J. Lindqvist","no voice in here, ever. that's the whole point.",null,1),
           m("ava.mp4","thank you","🙏 9",1),
           m("krzys","first server where i don't feel rushed",null,1),
@@ -242,7 +242,7 @@
           m("kai_","hi. not sure what to say"),
           m("Dr. Adeyemi","that's a fine start","👋 7")
         ]},
-        {id:"ask", label:"#ask-anything", status:"open", typing:"Dr. Nowak", msgs:[
+        {id:"ask", label:"#ask-anything", guardian:true, status:"open", typing:"Dr. Nowak", msgs:[
           m("bruno","is this actually therapy?",null,1),
           m("Dr. Nowak","no. it's a room with a professional in it. different thing, on purpose.",null,1),
           m("bruno","ok that's clearer",null,1),
@@ -264,7 +264,12 @@
         memBox  = document.getElementById("vizMembers"),
         typing  = document.getElementById("vizTyping"),
         typeNm  = document.getElementById("vizTypingName"),
-        prof    = document.getElementById("vizProfile");
+        prof    = document.getElementById("vizProfile"),
+        guardEl = document.getElementById("vizGuard"),
+        flagBtn = document.getElementById("vizFlag"),
+        tip     = document.getElementById("vizTip");
+    var SHIELD = '<svg class="viz__shield" viewBox="0 0 12 14" aria-hidden="true" focusable="false">'
+               + '<path d="M6 0 12 2.3v4.5C12 10.4 9.6 12.9 6 14 2.4 12.9 0 10.4 0 6.8V2.3z"/></svg>';
     var timers = [], space = null, chan = null, onScreen = false, lastOpener = null;
 
     function clear(){ timers.forEach(clearTimeout); timers = []; }
@@ -290,8 +295,10 @@
            + ' data-who="' + esc(msg.who) + '">'
            + who(msg.who, false)
            + '<div class="body">'
-           +   '<button type="button" class="msg__name' + (pro ? " pro" : "") + '" data-who="' + esc(msg.who) + '">'
+           +   '<div class="msg__head"><button type="button" class="msg__name' + (pro ? " pro" : "") + '" data-who="' + esc(msg.who) + '">'
            +     esc(msg.who) + '</button>'
+           +   (pro ? '<button type="button" class="vbadge" aria-describedby="vizTip">Verified specialist</button>' : '')
+           +   '</div>'
            +   '<p>' + esc(msg.text) + '</p>'
            +   (msg.rx ? '<span class="rx">' + esc(msg.rx) + '</span>' : "")
            + '</div></div>';
@@ -312,14 +319,18 @@
         return '<button type="button" role="tab" data-ch="' + c.id + '"'
              + ' id="vizTab-' + key + '-' + c.id + '" aria-controls="vizPanel-' + key + '-' + c.id + '"'
              + (i===0 ? ' class="on" aria-selected="true" tabindex="0"' : ' aria-selected="false" tabindex="-1"')
-             + '>' + esc(c.label) + '</button>';
+             + (c.guardian ? ' data-guardian="1"' : '')
+             + '>' + (c.guardian ? SHIELD : '') + esc(c.label)
+             + (c.guardian ? '<span class="sr-only"> (guardian channel, specialist present)</span>' : '')
+             + '</button>';
       }).join("");
 
       panels.innerHTML = sp.channels.map(function(c, i){
         return '<div class="viz__panel' + (i===0 ? " on" : "") + '" data-ch="' + c.id + '"'
              + ' id="vizPanel-' + key + '-' + c.id + '" role="tabpanel" aria-labelledby="vizTab-' + key + '-' + c.id + '"'
              + ' data-name="' + esc(c.label.replace(/^#/,"")) + '" data-status="' + esc(c.status) + '"'
-             + ' data-typing="' + esc(c.typing) + '"' + (i===0 ? "" : " hidden") + '>'
+             + ' data-typing="' + esc(c.typing) + '"' + (c.guardian ? ' data-guardian="1"' : '')
+             + (i===0 ? "" : " hidden") + '>'
              + c.msgs.map(msgHTML).join("") + '</div>';
       }).join("");
 
@@ -327,8 +338,8 @@
         '<b>Specialists — ' + sp.members.specialists.length + '</b>'
         + sp.members.specialists.map(function(n){
             return '<div class="mem online">' + who(n, true)
-                 + '<span class="sr-only">Online, verified specialist</span>'
-                 + '<em class="badge" aria-hidden="true">VERIFIED</em></div>';
+                 + '<span class="sr-only">Online</span>'
+                 + '<button type="button" class="badge" aria-describedby="vizTip">Verified</button></div>';
           }).join("")
         + '<b>Players — ' + sp.members.count + '</b>'
         + sp.members.players.map(function(n){
@@ -360,6 +371,8 @@
       if(!panel) return;
       barEl.textContent  = "# " + panel.dataset.name;
       statEl.textContent = panel.dataset.status;
+      guardEl.hidden = !panel.dataset.guardian;
+      setFlag(!!panel.querySelector(".msg--private"));
       // the feed itself is a scripted mockup; announcing the switch is the
       // useful signal, announcing every message would just be noise
       var live = document.getElementById("vizAnnounce");
@@ -432,6 +445,77 @@
       else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
     });
 
+    /* ---- the quiet flag ---------------------------------------------------
+       A player asks for a specialist without leaving the channel and without
+       anyone else seeing it: a private note, then a private reply, and the
+       specialist's row in the roster lights up. Mockup only — nothing is sent. */
+    function setFlag(on){
+      flagBtn.setAttribute("aria-pressed", on ? "true" : "false");
+      flagBtn.textContent = on ? "Specialist asked · only you see this" : "Ask a specialist quietly";
+    }
+    function flag(){
+      var panel = panels.querySelector(".viz__panel.on");
+      if(!panel || panel.querySelector(".msg--private")) return;
+      var sp = spaceByKey(space), pro = sp.members.specialists[0], ch = panel.dataset.name;
+      panel.insertAdjacentHTML("beforeend",
+        '<div class="msg msg--private on" data-backlog="1">'
+        + '<span class="msg__lock" aria-hidden="true">' + LOCK + '</span>'
+        + '<div class="body"><p class="msg__only">Only you can see this</p>'
+        + '<p>You asked for a specialist. <b>' + esc(pro) + '</b> will check in with you privately — '
+        + 'nobody else in #' + esc(ch) + ' can see that you asked.</p></div></div>');
+      setFlag(true);
+      var live = document.getElementById("vizAnnounce");
+      if(live) live.textContent = "Specialist asked. Only you can see this. " + pro + " will check in with you privately.";
+      var row = memBox.querySelector('.mem [data-who="' + pro + '"]');
+      row = row && row.closest(".mem");
+      if(row){ row.classList.add("pulse"); setTimeout(function(){ row.classList.remove("pulse"); }, 2600); }
+      // not in the feed's own timer list: a feed restart must not cancel the reply
+      setTimeout(function(){
+        if(!document.contains(panel)) return;
+        panel.insertAdjacentHTML("beforeend",
+          '<div class="msg msg--private on" data-backlog="1" data-who="' + esc(pro) + '">'
+          + who(pro, false)
+          + '<div class="body"><div class="msg__head"><button type="button" class="msg__name pro" data-who="' + esc(pro) + '">'
+          + esc(pro) + '</button><button type="button" class="vbadge" aria-describedby="vizTip">Verified specialist</button></div>'
+          + '<p class="msg__only">Only to you</p>'
+          + '<p>hey — saw your flag. want to talk here, or move to #quiet-room? no rush either way.</p></div></div>');
+        if(live) live.textContent = pro + " replied, privately: want to talk here, or move to quiet-room? No rush either way.";
+      }, reduce ? 0 : 1600);
+    }
+    var LOCK = '<svg viewBox="0 0 12 14" focusable="false"><path d="M3 6V4a3 3 0 0 1 6 0v2h1a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm1.5 0h3V4a1.5 1.5 0 0 0-3 0z"/></svg>';
+
+    /* ---- verified-badge tooltip (WCAG 1.4.13: hoverable, dismissible with
+       Esc, stays while the pointer or focus is on it; a tap also opens it) */
+    var tipFor = null, tipHide = null;
+    function showTip(b){
+      clearTimeout(tipHide);
+      tipFor = b; tip.hidden = false;
+      var vr = viz.getBoundingClientRect(), br = b.getBoundingClientRect();
+      var left = Math.min(Math.max(br.left - vr.left, 8), vr.width - tip.offsetWidth - 8);
+      var top = br.bottom - vr.top + 8;
+      if(top + tip.offsetHeight > vr.height - 8) top = br.top - vr.top - tip.offsetHeight - 8;
+      tip.style.left = left + "px"; tip.style.top = Math.max(top, 8) + "px";
+    }
+    function hideTip(now){
+      clearTimeout(tipHide);
+      if(now){ tip.hidden = true; tipFor = null; return; }
+      tipHide = setTimeout(function(){ tip.hidden = true; tipFor = null; }, 220);
+    }
+    viz.addEventListener("mouseover", function(e){
+      var b = e.target.closest(".vbadge,.badge");
+      if(b) showTip(b); else if(e.target.closest("#vizTip")) clearTimeout(tipHide);
+    });
+    viz.addEventListener("mouseout", function(e){
+      if(e.target.closest(".vbadge,.badge,#vizTip")) hideTip();
+    });
+    viz.addEventListener("focusin", function(e){
+      var b = e.target.closest(".vbadge,.badge");
+      if(b) showTip(b); else if(tipFor) hideTip(true);
+    });
+    viz.addEventListener("focusout", function(e){
+      if(e.target.closest(".vbadge,.badge")) hideTip();
+    });
+
     /* ---- one delegated listener for the whole panel --------------------- */
     viz.addEventListener("click", function(e){
       var sp = e.target.closest("[data-space]");
@@ -439,12 +523,16 @@
       var tab = e.target.closest("[role=tab]");
       if(tab){ if(tab.dataset.ch !== chan) selectChannel(tab.dataset.ch); return; }
       if(e.target.closest(".prof__close")){ closeProfile(); return; }
+      if(e.target.closest("#vizFlag")){ flag(); return; }
+      var badge = e.target.closest(".vbadge,.badge");
+      if(badge){ showTip(badge); return; }
+      if(tipFor && !e.target.closest("#vizTip")) hideTip(true);
       var person = e.target.closest("[data-who]");
       if(person && person.tagName === "BUTTON"){ lastOpener = person; openProfile(person.dataset.who); return; }
       if(!e.target.closest("#vizProfile")) closeProfile();
     });
     viz.addEventListener("keydown", function(e){
-      if(e.key === "Escape"){ closeProfile(); return; }
+      if(e.key === "Escape"){ if(tipFor){ hideTip(true); return; } closeProfile(); return; }
       var d = e.key === "ArrowDown" || e.key === "ArrowRight" ? 1
             : e.key === "ArrowUp"   || e.key === "ArrowLeft"  ? -1 : 0;
       if(!d) return;

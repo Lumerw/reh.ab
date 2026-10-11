@@ -54,7 +54,11 @@ Concept, research, copy, visual and motion design, and front-end.
   - one shared corner slot for every animated mark.
 - **A working, data-driven chat mockup.** The servers, channels, people and profile
   dialog come from plain data objects, and the panel is keyboard-operable with a
-  focus trap.
+  focus trap. It shows the product's core ideas rather than only describing them:
+  - a visibly distinct **guardian channel**;
+  - a quiet **"ask a specialist" flag** that only the player can see, answered by a
+    private reply;
+  - an accessible **tooltip** that explains the Verified Specialist badge.
 - **Motion:**
   - a looping SVG morph (two loops closing into a heart);
   - a canvas waveform with trailing frames;

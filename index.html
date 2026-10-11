@@ -210,13 +210,23 @@
       </div>
 
       <div class="viz__main">
-        <div class="viz__bar"><span id="vizBar"></span><em id="vizStatus"></em></div>
+        <div class="viz__bar">
+          <span id="vizBar"></span>
+          <span class="viz__guard" id="vizGuard" hidden><svg class="viz__shield" viewBox="0 0 12 14" aria-hidden="true" focusable="false"><path d="M6 0 12 2.3v4.5C12 10.4 9.6 12.9 6 14 2.4 12.9 0 10.4 0 6.8V2.3z"/></svg>Guardian · specialist present</span>
+          <em id="vizStatus"></em>
+          <button type="button" class="viz__flag" id="vizFlag" aria-pressed="false">Ask a specialist quietly</button>
+        </div>
         <div class="viz__panels" id="vizPanels"></div>
         <div class="viz__typing" id="vizTyping" aria-hidden="true"><b><s></s><s></s><s></s></b><span id="vizTypingName"></span> is typing…</div>
       </div>
 
       <div class="viz__members" id="vizMembers"></div>
       <p class="sr-only" id="vizAnnounce" aria-live="polite"></p>
+      <div class="vtip" id="vizTip" role="tooltip" hidden>
+        <b>Verified specialist.</b> Licence, background check and two interviews — one clinical,
+        one on games — confirmed before they get a guardian server. Here to notice and refer,
+        not to give therapy in the game.
+      </div>
       <div class="prof" id="vizProfile" role="dialog" aria-modal="true" aria-labelledby="vizProfileName" hidden></div>
     </div>
 
