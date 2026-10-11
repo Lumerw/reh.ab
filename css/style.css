@@ -500,15 +500,15 @@ html:not(.js) #loader{display:none}
 .viz__rail button{cursor:pointer}
 .viz__rail button:hover{background:rgba(255,255,255,.18);color:#fff;border-radius:12px}
 .viz__rail button.on{color:#fff;border-radius:12px}
-.viz__rail hr{width:20px;border:0;border-top:1px solid rgba(255,255,255,.12);margin:3px 0}
+.viz__rail .viz__sep{display:block;width:20px;border:0;border-top:1px solid rgba(255,255,255,.12);margin:3px 0}
 
 .viz__chan{background:#0e0e11;padding:14px 12px;border-right:1px solid rgba(255,255,255,.06);
   display:flex;flex-direction:column;gap:3px;min-width:0}
-.viz__chan h4{
+.viz__chan h3{
   margin:0 0 12px;font-size:var(--font-size-label);font-weight:700;letter-spacing:-.01em;
   color:rgba(255,255,255,.92);display:flex;align-items:center;gap:6px;
 }
-.viz__chan h4::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--color-red)}
+.viz__chan h3::after{content:"";width:6px;height:6px;border-radius:50%;background:var(--color-red)}
 .viz__chan b{
   font-size:var(--font-size-caption);font-family:var(--font-rounded);letter-spacing:.12em;
   text-transform:uppercase;margin:10px 0 4px;
@@ -569,7 +569,7 @@ html:not(.js) #loader{display:none}
   padding:2px 5px;border-radius:99px;margin-left:7px;vertical-align:1px;
 }
 .viz__typing{
-  padding:0 16px 13px;font-size:var(--font-size-caption);color:rgba(255,255,255,.4);
+  padding:0 16px 13px;font-size:var(--font-size-caption);color:rgba(255,255,255,.62);
   opacity:0;transition:opacity .4s;
 }
 .viz__typing.on{opacity:1}
@@ -677,7 +677,7 @@ html:not(.js) #loader{display:none}
     grid-area:chan;border-right:0;border-bottom:1px solid rgba(255,255,255,.06);
     padding:10px 12px;
   }
-  .viz__chan h4{margin-bottom:8px}
+  .viz__chan h3{margin-bottom:8px}
   .viz__chan>b,.viz__vc{display:none}
   .viz__tabs{flex-direction:row;gap:6px;overflow-x:auto}
   .viz__tabs button{width:auto;white-space:nowrap}
@@ -749,7 +749,7 @@ html:not(.js) #loader{display:none}
 .card{background:#0b0b0d;padding:clamp(18px,2.4vw,24px)}
 .card__top{display:flex;align-items:center;gap:12px}
 .card__top i{width:44px;height:44px;border-radius:50%;flex:none}
-.card h3{font-size:var(--font-size-body);letter-spacing:-.005em}
+.card .card__name{display:block;font-size:var(--font-size-body);letter-spacing:-.005em}
 .card__cred{
   display:block;font-family:var(--font-rounded);font-size:var(--font-size-caption);letter-spacing:.08em;
   color:#BBD6EE;margin-top:4px;
@@ -1308,29 +1308,26 @@ html.a11y-contrast :focus-visible{outline-width:3px}
   .viz__typing b s{animation:none}
   .viz__bar em::before{animation:none;opacity:1}
 }
-html.a11y-reduce{
-  scroll-behavior:auto;
-  *,*::before,*::after{
-    animation-duration:.001ms!important;animation-iteration-count:1!important;
-    transition-duration:.001ms!important;
-  }
-  .js .rv>.wrap{opacity:1;transform:none}
-  .qmark{opacity:1;transform:none}
-  #faq.in .qmark svg{animation:none}
-  .orb__ring,.orb__glow,.orb__spark{animation:none}
-  .hero-h1 .ch{opacity:1}
-  .hero-h1 .d1{opacity:.66}
-  .hero-h1 .d2{opacity:.3}
-  .hero-h1 .her::before{animation:none;opacity:.6}
-  .proof-line span{animation:none;transform:scaleX(.72)}
-  .care__tick s{animation:none;transform:scaleX(1)}
-  .marquee{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
-  .marquee__track{animation:none}
-  .logo--dup{display:none}
-  .band--gradient{animation:none;background-position:0% 50%}
-  .band--gradient::before{animation:none;opacity:.35}
-  .sos{animation:none;opacity:1}
-  .ribbon__lead{animation:none;stroke-dasharray:none;opacity:.9}
-  .viz__typing b s{animation:none}
-  .viz__bar em::before{animation:none;opacity:1}
-}
+/* the same rules, forced by the on-page motion switch (flat selectors so
+   browsers without CSS nesting honour them too) */
+html.a11y-reduce{scroll-behavior:auto}
+html.a11y-reduce *,html.a11y-reduce *::before,html.a11y-reduce *::after{animation-duration:.001ms!important;animation-iteration-count:1!important; transition-duration:.001ms!important;}
+html.a11y-reduce.js .rv>.wrap{opacity:1;transform:none}
+html.a11y-reduce .qmark{opacity:1;transform:none}
+html.a11y-reduce #faq.in .qmark svg{animation:none}
+html.a11y-reduce .orb__ring,html.a11y-reduce .orb__glow,html.a11y-reduce .orb__spark{animation:none}
+html.a11y-reduce .hero-h1 .ch{opacity:1}
+html.a11y-reduce .hero-h1 .d1{opacity:.66}
+html.a11y-reduce .hero-h1 .d2{opacity:.3}
+html.a11y-reduce .hero-h1 .her::before{animation:none;opacity:.6}
+html.a11y-reduce .proof-line span{animation:none;transform:scaleX(.72)}
+html.a11y-reduce .care__tick s{animation:none;transform:scaleX(1)}
+html.a11y-reduce .marquee{overflow-x:auto;-webkit-mask-image:none;mask-image:none}
+html.a11y-reduce .marquee__track{animation:none}
+html.a11y-reduce .logo--dup{display:none}
+html.a11y-reduce .band--gradient{animation:none;background-position:0% 50%}
+html.a11y-reduce .band--gradient::before{animation:none;opacity:.35}
+html.a11y-reduce .sos{animation:none;opacity:1}
+html.a11y-reduce .ribbon__lead{animation:none;stroke-dasharray:none;opacity:.9}
+html.a11y-reduce .viz__typing b s{animation:none}
+html.a11y-reduce .viz__bar em::before{animation:none;opacity:1}

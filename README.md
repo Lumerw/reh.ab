@@ -39,6 +39,8 @@ sources in the **Research & sources** drawer, and US-only figures are labelled a
 | What it looks like inside | Stepped support |
 |---|---|
 | ![Chat mockup](docs/inside.png) | ![Escalation path](docs/support.png) |
+| **Who's already here** | **How we'd know it works** |
+| ![Landscape](docs/landscape.png) | ![Pilot](docs/pilot.png) |
 
 ## What I did
 
@@ -73,6 +75,14 @@ contrast mode fixes it.
 
 The page also works without JavaScript, and YouTube is click-to-load from
 `youtube-nocookie.com`.
+
+**Checked with:**
+- **W3C HTML validator:** 0 errors, 0 warnings.
+- **W3C CSS validator:** clean, apart from `vector-effect`, a valid SVG 2 property the
+  validator doesn't know yet.
+- **axe-core:** no violations in normal or high-contrast mode, beyond the documented red
+  gap.
+- **Lighthouse:** Performance 97 · Accessibility 100 · Best practices 100 · SEO 100.
 
 ## Run it locally
 

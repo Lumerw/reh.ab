@@ -310,12 +310,14 @@
 
       tabsBox.innerHTML = sp.channels.map(function(c, i){
         return '<button type="button" role="tab" data-ch="' + c.id + '"'
+             + ' id="vizTab-' + key + '-' + c.id + '" aria-controls="vizPanel-' + key + '-' + c.id + '"'
              + (i===0 ? ' class="on" aria-selected="true" tabindex="0"' : ' aria-selected="false" tabindex="-1"')
              + '>' + esc(c.label) + '</button>';
       }).join("");
 
       panels.innerHTML = sp.channels.map(function(c, i){
         return '<div class="viz__panel' + (i===0 ? " on" : "") + '" data-ch="' + c.id + '"'
+             + ' id="vizPanel-' + key + '-' + c.id + '" role="tabpanel" aria-labelledby="vizTab-' + key + '-' + c.id + '"'
              + ' data-name="' + esc(c.label.replace(/^#/,"")) + '" data-status="' + esc(c.status) + '"'
              + ' data-typing="' + esc(c.typing) + '"' + (i===0 ? "" : " hidden") + '>'
              + c.msgs.map(msgHTML).join("") + '</div>';

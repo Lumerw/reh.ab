@@ -35,7 +35,7 @@
 
 <a class="skip" href="#main">Skip to main content</a>
 
-<div class="a11y" id="a11y">
+<aside class="a11y" id="a11y" aria-label="Accessibility options">
   <button type="button" class="a11y__btn" id="a11yBtn"
           aria-expanded="false" aria-controls="a11yPanel"
           aria-label="Accessibility options">
@@ -71,7 +71,7 @@
       </div>
     </div>
   </div>
-</div>
+</aside>
 
 <div id="progress"></div>
 
@@ -106,8 +106,9 @@
           Gaming is one of the biggest social spaces on earth — and one of the least supported.
         </p>
 
-        <div class="ticker" data-ticker aria-label="data. vision. tools — put to use.">
-          <div class="ticker__track">
+        <div class="ticker" data-ticker>
+          <span class="sr-only">data. vision. tools — put to use.</span>
+          <div class="ticker__track" aria-hidden="true">
             <span>data.</span>
             <span>vision.</span>
             <span>tools — put to use.</span>
@@ -126,9 +127,9 @@
     <div class="band__row">
 
       <div class="avatars" aria-hidden="true">
-        <video aria-hidden="true" tabindex="-1" data-media="p1" poster="./assets/placeholder/p1.svg" muted autoplay loop playsinline preload="metadata"></video>
-        <video aria-hidden="true" tabindex="-1" data-media="p2" poster="./assets/placeholder/p2.svg" muted autoplay loop playsinline preload="metadata"></video>
-        <video aria-hidden="true" tabindex="-1" data-media="p3" poster="./assets/placeholder/p3.svg" muted autoplay loop playsinline preload="metadata"></video>
+        <video aria-hidden="true" data-media="p1" poster="./assets/placeholder/p1.svg" muted autoplay loop playsinline preload="metadata"></video>
+        <video aria-hidden="true" data-media="p2" poster="./assets/placeholder/p2.svg" muted autoplay loop playsinline preload="metadata"></video>
+        <video aria-hidden="true" data-media="p3" poster="./assets/placeholder/p3.svg" muted autoplay loop playsinline preload="metadata"></video>
       </div>
       <p id="proofQuote" aria-live="polite">“this is more helpful than you think”</p>
       <div class="proof-line" aria-hidden="true"><span></span></div>
@@ -185,22 +186,22 @@
 <!-- ===== VISUALISATION · bg black ===== -->
 <section class="sec sec--black rv" id="inside" style="padding-top:0">
   <div class="wrap wrap--wide">
-    <p class="cap">What it looks like from the inside</p>
+    <h2 class="cap">What it looks like from the inside</h2>
 
 
     <div class="viz" id="viz">
       <div class="viz__rail" role="tablist" aria-label="Spaces" id="vizRail">
-        <button type="button" role="tab" class="on" data-space="R" aria-selected="true">R</button>
-        <hr>
-        <button type="button" role="tab" data-space="A" aria-selected="false">A</button>
-        <button type="button" role="tab" data-space="B" aria-selected="false">B</button>
-        <button type="button" role="tab" data-space="C" aria-selected="false">C</button>
-        <hr>
+        <button type="button" role="tab" aria-controls="vizChan" class="on" data-space="R" aria-selected="true">R</button>
+        <span class="viz__sep" role="none"></span>
+        <button type="button" role="tab" aria-controls="vizChan" data-space="A" aria-selected="false">A</button>
+        <button type="button" role="tab" aria-controls="vizChan" data-space="B" aria-selected="false">B</button>
+        <button type="button" role="tab" aria-controls="vizChan" data-space="C" aria-selected="false">C</button>
+        <span class="viz__sep" role="none"></span>
         <span class="viz__add" aria-hidden="true">+</span>
       </div>
 
-      <div class="viz__chan">
-        <h4 id="vizSpaceName">guardian · eu-west</h4>
+      <div class="viz__chan" id="vizChan" role="tabpanel" aria-labelledby="vizSpaceName">
+        <h3 id="vizSpaceName">guardian · eu-west</h3>
         <b id="vizTabsLabel">Text</b>
         <div class="viz__tabs" role="tablist" aria-labelledby="vizTabsLabel" id="vizTabs"></div>
         <b aria-hidden="true">Voice</b>
@@ -312,37 +313,37 @@
 <!-- ===== PRODUCT · bg black ===== -->
 <section class="sec sec--black rv" style="padding-top:0">
   <div class="wrap wrap--wide">
-    <p class="cap">Find a specialist who actually plays</p>
+    <h2 class="cap">Find a specialist who actually plays</h2>
     <div class="dir" role="img" aria-label="Product mockup: a directory of specialist profile cards, each with a name, verified credential, specialties and the games they play.">
       <div class="dir__bar" aria-hidden="true">
         <em>Search specialists — anxiety, burnout, gaming…</em>
         <u>Language</u><u>Game</u><u>Availability</u>
       </div>
       <div class="dir__grid" aria-hidden="true">
-        <article class="card">
-          <div class="card__top"><video aria-hidden="true" tabindex="-1" data-media="p4" poster="./assets/placeholder/p4.svg" muted autoplay loop playsinline preload="metadata"></video>
-            <div><h3>Dr. A. Nowak</h3><b class="card__cred">PSYCHIATRIST · LIC. VERIFIED</b></div>
+        <div class="card">
+          <div class="card__top"><video aria-hidden="true" data-media="p4" poster="./assets/placeholder/p4.svg" muted autoplay loop playsinline preload="metadata"></video>
+            <div><b class="card__name">Dr. A. Nowak</b><b class="card__cred">PSYCHIATRIST · LIC. VERIFIED</b></div>
           </div>
           <p>Works with compulsive play and sleep collapse. Plays extraction shooters, badly.</p>
           <div class="chips"><s>Addiction</s><s>Sleep</s><s>PL / EN</s></div>
           <div class="card__foot">On a guardian server now</div>
-        </article>
-        <article class="card">
-          <div class="card__top"><video aria-hidden="true" tabindex="-1" data-media="p1" poster="./assets/placeholder/p1.svg" muted autoplay loop playsinline preload="metadata"></video>
-            <div><h3>M. Kowalczyk</h3><b class="card__cred">PSYCHOLOGIST · LIC. VERIFIED</b></div>
+        </div>
+        <div class="card">
+          <div class="card__top"><video aria-hidden="true" data-media="p1" poster="./assets/placeholder/p1.svg" muted autoplay loop playsinline preload="metadata"></video>
+            <div><b class="card__name">M. Kowalczyk</b><b class="card__cred">PSYCHOLOGIST · LIC. VERIFIED</b></div>
           </div>
           <p>Teen isolation and school refusal. Ten years in survival-craft servers.</p>
           <div class="chips"><s>Teens</s><s>Isolation</s><s>PL</s></div>
           <div class="card__foot">On a guardian server now</div>
-        </article>
-        <article class="card">
-          <div class="card__top"><video aria-hidden="true" tabindex="-1" data-media="p3" poster="./assets/placeholder/p3.svg" muted autoplay loop playsinline preload="metadata"></video>
-            <div><h3>J. Lindqvist</h3><b class="card__cred">COUNSELLOR · LIC. VERIFIED</b></div>
+        </div>
+        <div class="card">
+          <div class="card__top"><video aria-hidden="true" data-media="p3" poster="./assets/placeholder/p3.svg" muted autoplay loop playsinline preload="metadata"></video>
+            <div><b class="card__name">J. Lindqvist</b><b class="card__cred">COUNSELLOR · LIC. VERIFIED</b></div>
           </div>
           <p>Group dynamics and moderation. Runs the quiet rooms on EU-North.</p>
           <div class="chips"><s>Community</s><s>Moderation</s><s>EN / SE</s></div>
           <div class="card__foot">On a guardian server now</div>
-        </article>
+        </div>
       </div>
     </div>
     <p class="credit-fallback">
@@ -358,11 +359,9 @@
       <div class="darkband">
         <div class="marquee" data-marquee tabindex="0" role="group" aria-label="Organisations referenced as sources in this deck. Scrollable.">
           <div class="marquee__track">
-            <span class="logo"><img src="./assets/logos/who.png" alt="World Health Organization" loading="lazy"></span>
             <span class="logo"><img src="./assets/logos/frontiers.png" alt="Frontiers" loading="lazy"></span>
             <span class="logo"><img src="./assets/logos/oxford.png" alt="University of Oxford" loading="lazy"></span>
             <span class="logo"><img src="./assets/logos/conversation.png" alt="The Conversation" loading="lazy"></span>
-            <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/who.png" alt="" loading="lazy"></span>
             <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/frontiers.png" alt="" loading="lazy"></span>
             <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/oxford.png" alt="" loading="lazy"></span>
             <span class="logo logo--dup" aria-hidden="true"><img src="./assets/logos/conversation.png" alt="" loading="lazy"></span>
@@ -370,7 +369,8 @@
         </div>
       </div>
       <p class="credit-fallback">
-        Also referenced: Harvard Health Publishing, the American Psychological Association,
+        Also referenced: the World Health Organization (named in text only — its emblem is
+        reserved for WHO's own use), Harvard Health Publishing, the American Psychological Association,
         the American Psychiatric Association, Uswitch and the ADL. All are cited as sources —
         not partners, and not endorsers. Full list with links at the bottom of this page.
 
@@ -605,6 +605,7 @@
 <!-- ===== PROOF EMBED · bg black ===== -->
 <section class="sec sec--black rv" style="padding-top:0">
   <div class="wrap wrap--wide">
+    <h2 class="sr-only">Videos from HealthyGamerGG</h2>
     <!-- Click-to-load: nothing is requested from YouTube until the visitor
          asks for the player, and then only from the no-cookie domain. -->
     <div class="video-embed" data-yt-list="UUlHVl2N3jPEbkNJVx-ItQIQ">
@@ -886,7 +887,7 @@
 </section>
 
 
-<!-- ===== CLOSING BOOKEND · bg --color-red-deep ===== -->
+<!-- ===== CLOSING BOOKEND · bg deep red ===== -->
 <section class="sec rv" id="closing">
   <div class="wrap wrap--wide">
     <div class="closing-grid">
