@@ -764,9 +764,27 @@
   (function(){
     var cv = document.getElementById("waveMark");
     if(!cv) return;
-    var ctx = cv.getContext("2d"), W = cv.width, H = cv.height;
-    var mid = H*0.52, amp = H*0.42, TRAIL = 5, LAG = 0.11;
+    var ctx = cv.getContext("2d"), W = 0, H = 0, mid = 0, amp = 0;
+    var TRAIL = 5, LAG = 0.11, stopped = false;
     var dur = (parseFloat(token("--duration-wave","5.5s"))||5.5) * 1000;
+    // the shared mark family: one line weight and the token inks (read live,
+    // so high contrast's brighter soft ink reaches the canvas too)
+    var STROKE = parseFloat(token("--icon-stroke","2px")) || 2, PAD = STROKE;
+
+    // draw in CSS px on a devicePixelRatio backing store, so the line is the
+    // same 2px as every SVG mark at any size or screen density
+    function size(){
+      var r = cv.getBoundingClientRect();
+      if(!r.width) return false;
+      var d = window.devicePixelRatio || 1;
+      cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
+      ctx.setTransform(d, 0, 0, d, 0, 0);
+      W = r.width; H = r.height; mid = H * 0.52; amp = H * 0.42;
+      // trailing frames ~5px apart at desktop size; capped at .32 (~4px at the
+      // 83px mobile size) so the trail span stays short
+      LAG = Math.min(0.32, 2 * Math.PI * 5.5 / W);
+      return true;
+    }
 
     function y(x, p){
       var env = Math.sin(x*Math.PI);               // pinned to the baseline at both ends
@@ -778,34 +796,53 @@
         + 0.18*Math.sin(x*Math.PI*6 + 3*p + 2.3)
       );
     }
-    function curve(p, alpha){
+    function curve(p, style){
       ctx.beginPath();
       for(var i=0;i<=120;i++){
         var x = i/120;
-        var px = x*(W-8)+4, py = y(x,p);
+        var px = x*(W-2*PAD)+PAD, py = y(x,p);
         i ? ctx.lineTo(px,py) : ctx.moveTo(px,py);
       }
-      ctx.strokeStyle = "rgba(255,255,255,"+alpha+")";
-      ctx.lineWidth = 3; ctx.lineJoin = "round"; ctx.lineCap = "round";
+      ctx.strokeStyle = style;
+      ctx.lineWidth = STROKE; ctx.lineJoin = "round"; ctx.lineCap = "round";
       ctx.stroke();
     }
     function draw(p){
+      if(!W && !size()) return;
       ctx.clearRect(0,0,W,H);
-      ctx.beginPath();                              // the baseline
-      ctx.moveTo(4,mid); ctx.lineTo(W-4,mid);
-      ctx.strokeStyle = "rgba(255,255,255,.45)"; ctx.lineWidth = 2; ctx.stroke();
-      for(var k=TRAIL;k>=1;k--) curve(p - k*LAG, 0.10 + (TRAIL-k)*0.055);
-      curve(p, 0.95);
+      ctx.beginPath();                              // the baseline: the soft track
+      ctx.moveTo(PAD,mid); ctx.lineTo(W-PAD,mid);
+      ctx.strokeStyle = token("--icon-ink-soft","rgba(255,255,255,.35)");
+      ctx.lineWidth = STROKE; ctx.lineCap = "round"; ctx.stroke();
+      for(var k=TRAIL;k>=1;k--) curve(p - k*LAG, "rgba(255,255,255," + (0.10 + (TRAIL-k)*0.055) + ")");
+      curve(p, token("--icon-ink","rgba(255,255,255,.85)"));
     }
-    if(reduce){ draw(0.8); return; }
+    size();
+    // moving the window to a screen with another pixel density changes no CSS
+    // size, so ResizeObserver stays quiet: watch the resolution itself
+    (function watchDpr(){
+      var mq = window.matchMedia && matchMedia("(resolution: " + (window.devicePixelRatio || 1) + "dppx)");
+      if(!mq || !mq.addEventListener) return;
+      mq.addEventListener("change", function(){
+        if(size() && stopped) draw(0.8);    // a running loop redraws on its next frame
+        watchDpr();                          // re-arm for the new ratio
+      }, {once:true});
+    })();
+    if("ResizeObserver" in window){
+      new ResizeObserver(function(){ if(size() && stopped) draw(0.8); }).observe(cv);
+    }
+    // a frozen frame still follows the high-contrast switch
+    new MutationObserver(function(){ if(stopped) draw(0.8); })
+      .observe(document.documentElement, {attributes:true, attributeFilter:["class"]});
+    if(reduce){ stopped = true; draw(0.8); return; }
     var start = null, raf;
     function frame(ts){
       if(start===null) start = ts;
       draw(((ts-start)%dur)/dur * Math.PI*2);
       raf = requestAnimationFrame(frame);
     }
-    MOTION.onStop(function(){ cancelAnimationFrame(raf); draw(0.8); });
-    onVisible(cv, function(){ raf = requestAnimationFrame(frame); },
+    MOTION.onStop(function(){ stopped = true; cancelAnimationFrame(raf); draw(0.8); });
+    onVisible(cv, function(){ if(!stopped) raf = requestAnimationFrame(frame); },
                   function(){ cancelAnimationFrame(raf); start = null; });
   })();
 

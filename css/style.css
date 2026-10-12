@@ -57,13 +57,19 @@
   --duration-morph:8s;                /* heart morph cycle               */
   --duration-lit:1.6s;                /* the "toget-her" reveal          */
   --duration-gradient:24s;            /* gradient drift                  */
-  --duration-ribbon:9s;               /* spiral ribbon twist             */
+  --duration-ribbon:9s;               /* infinity highlight lap          */
   --duration-wave:5.5s;               /* waveform morph                  */
 
-  /* one standard for every animated icon mark: same stroke
-     weight, same box height, same bottom-right slot in its section. The SOS
-     wordmark is the reference the rest are matched to. */
+  /* the animated-mark family: one line weight, three inks, one footprint,
+     one slot. Every stroked mark draws its lines at --icon-stroke; hierarchy
+     inside a mark comes from ink alone (soft track → line → the one bright
+     moving element), never from a thinner or thicker line. No mark exceeds
+     the orb's 1u x 1u square (u = --icon-unit): square and tall marks are 1u
+     tall, wide marks are 1u wide. All sit in the same bottom-right slot. */
   --icon-stroke:2px;
+  --icon-ink:rgba(255,255,255,.85);
+  --icon-ink-hi:rgba(255,255,255,.95);
+  --icon-ink-soft:rgba(255,255,255,.35);
   --icon-width:clamp(180px,22vw,300px);   /* the shared footprint */
   --icon-unit:calc(var(--icon-width) * .46);
   --icon-bottom:clamp(36px,7vw,90px);
@@ -148,21 +154,28 @@ p{margin:0}
 .micro em{font-style:italic}
 .micro strong{font-weight:700;color:rgba(255,255,255,.95)}
 
-/* the twisted-ribbon infinity, drawn on canvas so the band
-   can change width and shade along its length the way spirala_.png does.
-   the trailing-frame waveform, same technique. */
+/* the trailing-frame waveform, drawn on canvas in js/main.js (device-pixel
+   backing store, 2px lines) */
 .wavemark{display:block}
-/* flat outline, shared stroke weight */
+/* (0,2,0) so it beats the slot's .icon-mark>canvas rule */
+.icon-mark>.wavemark{width:var(--icon-unit);height:calc(var(--icon-unit) * .48)}
+/* infinity: a soft track with one bright highlight travelling round it.
+   The dash is in screen px (--lead-len = the loop's rendered length), not
+   pathLength units — with non-scaling-stroke, pathLength dashes split the
+   highlight into fragments whenever the mark is scaled. 2.5434 = the path's
+   length / its viewBox width (136); recompute if the path changes. */
+.ribbon{--lead-len:calc(var(--icon-unit) * 2.5434);overflow:visible}
 .ribbon path{
-  fill:none;stroke:var(--color-white);stroke-width:var(--icon-stroke);
-  vector-effect:non-scaling-stroke;stroke-linecap:round;
+  fill:none;stroke:var(--icon-ink);stroke-width:var(--icon-stroke);
+  vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round;
 }
-.ribbon__base{opacity:.38}
+.ribbon .ribbon__base{stroke:var(--icon-ink-soft)}
+.ribbon .ribbon__lead{stroke:var(--icon-ink-hi)}
 .ribbon__lead{
-  stroke-dasharray:20 80;
+  stroke-dasharray:calc(var(--lead-len) * .2) calc(var(--lead-len) * .8);
   animation:ribbonTrace var(--duration-ribbon) var(--ease-standard) infinite;
 }
-@keyframes ribbonTrace{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+@keyframes ribbonTrace{from{stroke-dashoffset:var(--lead-len)}to{stroke-dashoffset:0}}
 
 /* ---- hero ticker, rebuilt. It scrolls up by one line at a
    time on a soft ease rather than cutting, and the viewport is three lines
@@ -202,7 +215,11 @@ p{margin:0}
   display:flex;align-items:flex-end;justify-content:flex-end;
   pointer-events:none;user-select:none;z-index:1;
 }
-.icon-mark>canvas,.icon-mark>svg{height:100%;width:auto;display:block}
+/* footprint: no mark exceeds the orb's 1u x 1u square. Square and tall
+   marks are 1u tall (orb, question mark); wide marks are 1u wide and take
+   their height from their own proportion — height:100% here is what used to
+   stretch the wave and the infinity to 2.5–3x everything else */
+.icon-mark>canvas,.icon-mark>svg{width:var(--icon-unit);height:auto;display:block}
 @media(max-width:860px){
   .icon-mark{position:static;margin:clamp(28px,6vw,48px) 0 0 auto}
 }
@@ -299,17 +316,6 @@ html:not(.js) #loader{display:none}
 /* the copy takes the free space, so the gradient band always lands flush on
    the hero's bottom edge instead of leaving a strip of red beneath it */
 #hero>.wrap{margin-block:auto}
-/* portfolio framing — says up front that this is a concept, not a service */
-#hero{position:relative}
-.concept-flag{
-  position:absolute;top:24px;right:var(--pad-x);z-index:3;
-  font-family:var(--font-rounded);font-size:var(--font-size-label);letter-spacing:.12em;
-  text-transform:uppercase;color:var(--color-white);
-  border:1.5px solid rgba(255,255,255,.7);border-radius:99px;padding:6px 14px;
-}
-.concept-flag a{color:inherit;text-decoration:none}
-.concept-flag a:hover{text-decoration:underline}
-@media(max-width:600px){.concept-flag{top:20px;padding:5px 11px;letter-spacing:.08em}}
 .hero-grid{
   display:flex;align-items:center;gap:clamp(28px,5vw,64px);
   flex-wrap:wrap-reverse;
@@ -808,18 +814,18 @@ html:not(.js) #loader{display:none}
    tick underneath is driven by a CSS keyframe on the same clock and curve. */
 /* no background of its own, and it now sits in the shared corner slot */
 .care{
-  padding:0;display:grid;grid-template-rows:1fr auto;gap:9px;
-  height:100%;aspect-ratio:100/74;
+  padding:0;display:grid;grid-template-rows:1fr auto;gap:calc(var(--icon-unit) * .065);
+  width:var(--icon-unit);height:auto;
 }
 .care svg{width:100%;height:auto;display:block;overflow:visible}
 .care svg path{
-  fill:none;stroke:var(--color-white);stroke-width:4;
+  fill:none;stroke:var(--icon-ink);stroke-width:var(--icon-stroke);
   stroke-linecap:round;stroke-linejoin:round;
   vector-effect:non-scaling-stroke;   /* keeps the shared 2px-family weight */
 }
-.care__tick{height:4px;border-radius:99px;background:rgba(255,255,255,.28);overflow:hidden}
+.care__tick{height:var(--icon-stroke);border-radius:99px;background:var(--icon-ink-soft);overflow:hidden}
 .care__tick s{
-  display:block;height:100%;width:100%;border-radius:99px;background:var(--color-white);
+  display:block;height:100%;width:100%;border-radius:99px;background:var(--icon-ink-hi);
   transform-origin:left center;transform:scaleX(.28);
   animation:careTick var(--duration-morph) var(--ease-standard) infinite;
 }
@@ -1377,3 +1383,6 @@ html.a11y-contrast .viz__tabs button[data-guardian]{color:var(--color-white)}
    wrap to a second line rather than overflow */
 .viz__bar{flex-wrap:wrap;row-gap:6px}
 @media(max-width:600px){.viz__bar em{display:none}}
+/* high contrast moves the red sections to the deep red, where the soft
+   tracks would fade; lift them */
+html.a11y-contrast{--icon-ink-soft:rgba(255,255,255,.5)}
