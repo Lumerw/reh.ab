@@ -814,7 +814,8 @@
       ctx.moveTo(PAD,mid); ctx.lineTo(W-PAD,mid);
       ctx.strokeStyle = token("--icon-ink-soft","rgba(255,255,255,.35)");
       ctx.lineWidth = STROKE; ctx.lineCap = "round"; ctx.stroke();
-      for(var k=TRAIL;k>=1;k--) curve(p - k*LAG, "rgba(255,255,255," + (0.10 + (TRAIL-k)*0.055) + ")");
+      var rgb = token("--icon-rgb","255,255,255");   // yellow in high contrast
+      for(var k=TRAIL;k>=1;k--) curve(p - k*LAG, "rgba(" + rgb + "," + (0.10 + (TRAIL-k)*0.055) + ")");
       curve(p, token("--icon-ink","rgba(255,255,255,.85)"));
     }
     size();

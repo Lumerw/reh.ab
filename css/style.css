@@ -1072,6 +1072,7 @@ html:not(.js) #loader{display:none}
 }
 .a11y__row:first-of-type{border-top:0}
 .a11y__row > span{font-size:var(--font-size-label);color:rgba(255,255,255,.9)}
+.a11y__hint{display:block;font-size:var(--font-size-caption);opacity:.75;margin-top:2px}
 .a11y__switch{width:44px;height:26px;flex:none;cursor:pointer;
   border:0;border-radius:99px;background:rgba(255,255,255,.22);
   transition:background var(--duration-drawer) var(--ease-standard);
@@ -1097,32 +1098,6 @@ html:not(.js) #loader{display:none}
 html.a11y-text-sm{font-size:87.5%}
 html.a11y-text-lg{font-size:118.75%}
 
-/* --- high contrast: pushes every remaining translucent string to solid --- */
-html.a11y-contrast .lede,html.a11y-contrast .micro,html.a11y-contrast .cap,
-html.a11y-contrast .credit-fallback,html.a11y-contrast .note,
-html.a11y-contrast .stat span,html.a11y-contrast .tag,
-html.a11y-contrast .msg p,html.a11y-contrast .who,html.a11y-contrast .rx,
-html.a11y-contrast .card p,html.a11y-contrast .chips s,
-html.a11y-contrast .card__foot,html.a11y-contrast .stage__body,
-html.a11y-contrast .stage__num,html.a11y-contrast .viz__chan b,
-html.a11y-contrast .viz__members b,html.a11y-contrast .viz__vc,
-html.a11y-contrast .viz__bar em,html.a11y-contrast .prof__bio,
-html.a11y-contrast .prof__note,html.a11y-contrast .prof__meta dt,
-html.a11y-contrast .viz__tabs button{color:var(--color-white)}
-html.a11y-contrast .sec--white .srclist li,
-html.a11y-contrast .sec--white .srclist em,
-html.a11y-contrast .sec--white .colophon,
-html.a11y-contrast .sec--blue .faq__a p,
-html.a11y-contrast .sec--blue .safety{color:var(--color-black)}
-/* high contrast keeps white text on red but moves the
-   mid-deck red to the bookend red, where white clears AA at every size
-   (5.93:1 vs 4.24:1) */
-html.a11y-contrast .sec--red{background:var(--color-red-deep)}
-html.a11y-contrast .band--gradient::before{opacity:0}
-html.a11y-contrast .proof p{background:rgba(0,0,0,.78)}
-html.a11y-contrast .faq__item{border-top-color:rgba(0,0,0,.7)}
-html.a11y-contrast .stage{border-top-color:rgba(255,255,255,.6)}
-html.a11y-contrast :focus-visible{outline-width:3px}
 
 /* ===========================================================================
    touch targets, status without colour, skip link
@@ -1377,12 +1352,80 @@ html.a11y-reduce .viz__bar em::before{animation:none;opacity:1}
 .vtip[hidden]{display:none}
 .mem.pulse{background:rgba(147,183,213,.12)}
 .mem.pulse .badge{background:rgba(147,183,213,.42);box-shadow:0 0 0 4px rgba(147,183,213,.18)}
-html.a11y-contrast .viz__guard,html.a11y-contrast .msg__only,html.a11y-contrast .vbadge,
-html.a11y-contrast .viz__tabs button[data-guardian]{color:var(--color-white)}
 /* the bar now carries a pill and a button as well as the status, so it may
    wrap to a second line rather than overflow */
 .viz__bar{flex-wrap:wrap;row-gap:6px}
 @media(max-width:600px){.viz__bar em{display:none}}
-/* high contrast moves the red sections to the deep red, where the soft
-   tracks would fade; lift them */
-html.a11y-contrast{--icon-ink-soft:rgba(255,255,255,.5)}
+
+/* ===========================================================================
+   HIGH CONTRAST — black and yellow
+   One theme for the whole page: black ground, yellow text, yellow frames
+   round every panel, card and control, and yellow fills (with black text)
+   for whatever is switched on or selected. Gradients, glows and tints are
+   dropped. Yellow on black measures 18.6:1, so every string clears AA and
+   AAA at any size. The broad rules use !important on purpose: this mode
+   must beat every per-component colour in the stylesheet.
+   ======================================================================== */
+html.a11y-contrast{
+  --hc-fg:#FFF23D;--hc-bg:#000;
+  --icon-ink:var(--hc-fg);--icon-ink-hi:var(--hc-fg);--icon-ink-soft:rgba(255,242,61,.45);
+  --icon-rgb:255,242,61;
+  background:var(--hc-bg);
+}
+html.a11y-contrast body{background:var(--hc-bg)!important;color:var(--hc-fg)!important}
+html.a11y-contrast body *{
+  color:var(--hc-fg)!important;border-color:var(--hc-fg)!important;
+  background-color:transparent!important;background-image:none!important;
+  box-shadow:none!important;text-shadow:none!important;
+}
+html.a11y-contrast body *::before,html.a11y-contrast body *::after{background-image:none!important}
+html.a11y-contrast #loader,
+/* overlays sit on top of content, so they need an opaque ground */
+html.a11y-contrast .a11y__panel,html.a11y-contrast .prof,html.a11y-contrast .vtip{background-color:var(--hc-bg)!important}
+
+/* sections: one black page, divided by yellow rules */
+html.a11y-contrast .sec:not(#hero){border-top:2px solid var(--hc-fg)}
+html.a11y-contrast .band{border-top:2px solid var(--hc-fg)}
+html.a11y-contrast .proof::after,html.a11y-contrast .band--gradient::before,
+html.a11y-contrast .hero-h1 .her::before,html.a11y-contrast .orb__glow{display:none}
+html.a11y-contrast .hero-h1 .d1,html.a11y-contrast .hero-h1 .d2{opacity:1}
+
+/* frames */
+html.a11y-contrast .viz,html.a11y-contrast .dir,html.a11y-contrast .darkband,
+html.a11y-contrast .video-embed,html.a11y-contrast .vid,html.a11y-contrast .prof,
+html.a11y-contrast .vtip,html.a11y-contrast .a11y__panel,html.a11y-contrast .proof p,
+html.a11y-contrast .viz__flag,html.a11y-contrast .badge,html.a11y-contrast .vbadge,
+html.a11y-contrast .viz__guard,html.a11y-contrast .a11y__steps button,
+html.a11y-contrast .a11y__switch,html.a11y-contrast .viz__rail button,
+html.a11y-contrast .chips s,html.a11y-contrast .video-link{border:2px solid var(--hc-fg)!important}
+html.a11y-contrast .proof p{border-radius:99px}
+
+/* switched on / selected: yellow fill, black text */
+html.a11y-contrast .closing-cta a,html.a11y-contrast .skip,
+html.a11y-contrast .a11y__steps button[aria-pressed="true"],
+html.a11y-contrast .a11y__switch[aria-checked="true"],
+html.a11y-contrast .viz__rail button.on,html.a11y-contrast .viz__tabs button.on,
+html.a11y-contrast .viz__flag[aria-pressed="true"]{
+  background-color:var(--hc-fg)!important;color:var(--hc-bg)!important;border:2px solid var(--hc-fg)!important;
+}
+html.a11y-contrast .viz__tabs button.on .viz__shield{fill:var(--hc-bg)}
+html.a11y-contrast .a11y__switch::after{background:var(--hc-fg)!important}
+html.a11y-contrast .a11y__switch[aria-checked="true"]::after{background:var(--hc-bg)!important}
+
+/* moving parts of the marks and small indicators */
+html.a11y-contrast .proof-line span,html.a11y-contrast .care__tick s{background-color:var(--hc-fg)!important}
+html.a11y-contrast .care__tick{background-color:var(--icon-ink-soft)!important}
+html.a11y-contrast .sos{color:transparent!important;-webkit-text-stroke-color:var(--hc-fg)}
+html.a11y-contrast .orb__spark,html.a11y-contrast .msg__lock svg{fill:var(--hc-fg)}
+html.a11y-contrast .qmark path,html.a11y-contrast .qmark circle{fill:var(--hc-fg);stroke:var(--hc-fg)}
+html.a11y-contrast .faq__q::before,html.a11y-contrast .faq__q::after,
+html.a11y-contrast .viz__chan h3::after,html.a11y-contrast .viz__bar em::before,
+html.a11y-contrast .card__foot::before{background:var(--hc-fg)!important}
+html.a11y-contrast .mem.online u{background-color:var(--hc-fg)!important}
+html.a11y-contrast .yt-facade__play::after{border-left-color:var(--hc-fg)}
+html.a11y-contrast .yt-facade img{opacity:.35}
+html.a11y-contrast .a11y__hint{opacity:1}
+
+/* links read as links without colour; focus is a thick yellow ring */
+html.a11y-contrast a:not(.closing-cta a):not(.vid):not(.skip){text-decoration:underline!important;text-underline-offset:3px}
+html.a11y-contrast :focus-visible{outline:3px solid var(--hc-fg)!important;outline-offset:3px!important;box-shadow:0 0 0 6px var(--hc-bg)!important}

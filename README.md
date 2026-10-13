@@ -72,10 +72,11 @@ Built to **WCAG 2.2 AA**:
 - 44px targets and a two-tone focus ring;
 - status shown without colour.
 
-An on-page panel turns motion off, raises contrast and changes text size, and it
-remembers the choice. Contrast was measured rather than guessed. One known gap is
+An on-page panel turns motion off, switches the whole page to a black-and-yellow
+high-contrast theme (yellow text, frames and buttons on black, 18.6:1) and changes
+text size, and it remembers the choice. Contrast was measured rather than guessed. One known gap is
 documented on the page: white body text on the bright red reaches 4.24:1. High
-contrast mode fixes it.
+contrast mode removes it.
 
 The page also works without JavaScript, and YouTube is click-to-load from
 `youtube-nocookie.com`.
