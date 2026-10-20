@@ -106,6 +106,9 @@ Then open http://localhost:4173.
 - **Portraits and video clips:** the author's local build uses licensed stock footage,
   which is not in this repository. The published page shows abstract placeholders
   instead (`assets/placeholder/`).
+- **Logo files:** vector SVGs where one exists. The platform icons come from
+  [Simple Icons](https://simpleicons.org) (CC0). The wordmarks come from Wikimedia Commons
+  or the organisations' own sites; dark lettering is set white for the dark bands.
 - **Third-party logos** appear only as cited sources or as the platforms the concept
   would run on. None of these organisations is affiliated with or endorses the project,
   and that includes Dr. Alok Kanojia and Healthy Gamer, who are named as inspiration
