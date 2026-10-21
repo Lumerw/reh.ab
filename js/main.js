@@ -2,13 +2,14 @@
   "use strict";
 
   /* ---- licensed media ---------------------------------------------------
-     The stock portraits and clips are licensed for the author's local build
-     only and are not in the public repository. On localhost they load as
-     before; anywhere else the abstract placeholders already in the markup
-     stay, so the published page never requests a file it doesn't have. */
+     Every portrait is a photo in assets/people/ (in the repository). The
+     hero band's three circles also have licensed video clips that exist only
+     in the author's local build: on localhost they play, anywhere else the
+     photo poster stays, so the published page never requests a file it
+     doesn't have. */
   var LICENSED = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
   function avatar(id){
-    return LICENSED ? "./assets/avatars/" + id + ".jpg" : "./assets/placeholder/" + id + ".svg";
+    return "./assets/people/" + id + ".jpg";
   }
   if(LICENSED){
     document.querySelectorAll("video[data-media]").forEach(function(v){
@@ -746,7 +747,7 @@
           var name = CLIPS[(ci + i) % CLIPS.length];
           if(v.dataset.clip === name) return;
           v.dataset.clip = name;
-          if(!LICENSED){ v.poster = "./assets/placeholder/" + name + ".svg"; return; }
+          if(!LICENSED){ v.poster = "./assets/people/" + name + ".jpg"; return; }
           v.poster = "./assets/video/" + name + ".jpg";
           v.src    = "./assets/video/" + name + ".mp4";
           var pl = v.play(); if(pl && pl.catch) pl.catch(function(){});

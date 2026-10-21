@@ -103,9 +103,10 @@ Then open http://localhost:4173.
 - **Copy, design and graphics:** © Wojciech Lumer, all rights reserved.
 - **Fonts:** none are bundled. The page uses the system Helvetica (macOS/iOS) or
   Arial.
-- **Portraits and video clips:** the author's local build uses licensed stock footage,
-  which is not in this repository. The published page shows abstract placeholders
-  instead (`assets/placeholder/`).
+- **Portraits:** stock photos of models in `assets/people/`, used for every
+  fictional person on the page. The hero band's three circles also have licensed
+  video clips that are not in this repository; they play only in the author's local
+  build, and the published page shows the photos instead.
 - **Logo files:** vector SVGs where one exists. The platform icons come from
   [Simple Icons](https://simpleicons.org) (CC0). The wordmarks come from Wikimedia Commons
   or the organisations' own sites; dark lettering is set white for the dark bands.

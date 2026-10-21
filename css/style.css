@@ -654,7 +654,7 @@ html:not(.js) #loader{display:none}
 .prof__note{margin-top:12px;font-size:var(--font-size-caption);line-height:1.45}
 .mem .av{width:24px;height:24px}
 .msg .av{width:26px;height:26px;flex:none}
-.card__top video{
+.card__top video,.card__top .card__av{
   width:44px;height:44px;border-radius:50%;object-fit:cover;flex:none;display:block;
   background:rgba(255,255,255,.08);
 }
