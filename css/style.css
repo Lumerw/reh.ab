@@ -918,12 +918,6 @@ html:not(.js) #loader{display:none}
   font-size:var(--font-size-body);line-height:1.6;padding-bottom:clamp(22px,3vw,30px);max-width:62ch;
 }
 .faq__a p+p{padding-top:14px;margin-top:-8px}
-.safety{
-  margin-top:clamp(40px,6vw,64px);padding-top:clamp(24px,3vw,32px);
-  border-top:1px solid rgba(255,255,255,.4);
-  font-size:var(--font-size-body);line-height:1.65;max-width:66ch;position:relative;z-index:1;
-}
-.safety b{font-weight:700}
 
 /* ===========================================================================
    16. FOOTER — RESEARCH & SOURCES
@@ -1234,7 +1228,6 @@ html.a11y-text-lg{font-size:118.75%}
 .faq__q{color:var(--color-black)}
 .faq__q::before,.faq__q::after{background:var(--color-black)}
 .faq__a p{color:rgba(0,0,0,.84)}
-.safety{border-top-color:rgba(0,0,0,.32);color:rgba(0,0,0,.9)}
 .qmark path,.qmark circle{fill:rgba(255,255,255,.62);stroke:rgba(255,255,255,.62)}
 
 .cap{color:rgba(255,255,255,.58)}
